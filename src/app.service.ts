@@ -37,7 +37,7 @@ export class AppService implements OnModuleInit {
         this.bufferClientService.joinchannelForBufferClients();
       })
     } catch (error) {
-      console.log("Some Error: ", error.code);
+      console.log("Some Error: ", error);
     }
     setTimeout(() => {
       this.bufferClientService.joinchannelForBufferClients();
