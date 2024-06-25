@@ -32,7 +32,7 @@ export class AppService implements OnModuleInit {
         // await fetchWithTimeout(`${process.env.uptimeChecker}/joinchannel`)
         // await fetchWithTimeout(`https://mychatgpt-pg6w.onrender.com/deletefiles`);
       })
-      
+
       schedule.scheduleJob('test4', '0 */4 * * *', 'Asia/Kolkata', async () => {
         // fetchWithTimeout(`${process.env.uptimeChecker}/joinchannel`)
         this.bufferClientService.joinchannelForBufferClients();
@@ -40,9 +40,11 @@ export class AppService implements OnModuleInit {
     } catch (error) {
       console.log("Some Error: ", error);
     }
-    setTimeout(() => {
-      this.bufferClientService.joinchannelForBufferClients();
-    }, 120000);
+    if (!process.env.LOCAL_SERVER) {
+      setTimeout(() => {
+        this.bufferClientService.joinchannelForBufferClients();
+      }, 60000);
+    }
   }
   getHello(): string {
     return 'Hello World!';
