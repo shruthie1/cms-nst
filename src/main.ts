@@ -15,6 +15,6 @@ async function bootstrap() {
   SwaggerModule.setup('api', app, document);
   mongoose.set('debug', true)
   await app.init();
-  await app.listen(3000);
+  await app.listen(process.env.PORT || 9000);
 }
 bootstrap();
