@@ -1,5 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import schedule from 'node-schedule-tz';
+import * as schedule from 'node-schedule-tz';
 import { BufferClientService, ClientService, fetchWithTimeout } from 'commonService';
 
 @Injectable()
