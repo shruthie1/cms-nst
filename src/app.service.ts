@@ -3,15 +3,15 @@ import schedule from 'node-schedule-tz';
 import { BufferClientService, ClientService, fetchWithTimeout } from 'commonService';
 
 @Injectable()
-export class AppService {
+export class AppService implements OnModuleInit {
   constructor(
     private clientService: ClientService,
     private bufferClientService: BufferClientService,
   ) {
     console.log("App Module Constructor initiated !!");
-
   }
-  OnModuleInit() {
+
+  onModuleInit() {
     console.log("App Module initiated !!");
     try {
       schedule.scheduleJob('test3', ' 25 2 * * * ', 'Asia/Kolkata', async () => {
