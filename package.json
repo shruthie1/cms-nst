@@ -5,8 +5,11 @@
   "author": "",
   "private": true,
   "license": "UNLICENSED",
+  "engines": {
+    "node": ">=16.0.0 <21.0.0"
+  },
   "scripts": {
-    "build": "nest build",
+    "build": "npm update commonService && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
