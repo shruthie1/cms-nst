@@ -42,7 +42,7 @@ export class AppService implements OnModuleInit {
     }
     if (!process.env.LOCAL_SERVER) {
       setTimeout(() => {
-        this.bufferClientService.joinchannelForBufferClients();
+        //this.bufferClientService.joinchannelForBufferClients();
       }, 60000);
     }
   }
