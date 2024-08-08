@@ -1,9 +1,11 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import * as schedule from 'node-schedule-tz';
 import { BufferClientService, ClientService, fetchWithTimeout } from 'commonService';
+import { SetupClientQueryDto } from 'commonService/dist/components/clients/dto/setup-client.dto';
 
 @Injectable()
 export class AppService implements OnModuleInit {
+  private timeoutId: NodeJS.Timeout;
   constructor(
     private clientService: ClientService,
     private bufferClientService: BufferClientService,
@@ -46,6 +48,16 @@ export class AppService implements OnModuleInit {
       }, 60000);
     }
   }
+
+  async setupClient(clientId: string, setupClientQueryDto: SetupClientQueryDto) {
+    clearTimeout(this.timeoutId);
+    this.timeoutId = setTimeout(() => {
+      this.bufferClientService.joinchannelForBufferClients();
+      this.timeoutId = undefined;
+    }, 120000)
+    return await this.clientService.setupClient(clientId, setupClientQueryDto);
+  }
+
   getHello(): string {
     return 'Hello World!';
   }
