@@ -12,7 +12,7 @@ async function overwriteFile(branch) {
       resource_type: 'auto',
       overwrite: true,
       invalidate: true,
-      public_id: `cms-nst.js`
+      public_id: `cms-nst-${branch}.js`
     });
     console.log(result);
 
