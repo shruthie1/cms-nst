@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Param, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiOperation } from '@nestjs/swagger';
 import { SetupClientQueryDto } from 'commonService/dist/components/clients/dto/setup-client.dto';
@@ -24,5 +24,19 @@ export class AppController {
   @Get("exit")
   exit(): string {
     process.exit(1)
+  }
+
+  @Get('forward')
+  async forward(@Query('url') url: string, @Query() query: any): Promise<any> {
+    // Remove 'url' from the query object as it's used separately
+    delete query.url;
+
+    // Validate that the 'url' query parameter is provided
+    if (!url) {
+      throw new BadRequestException('The "url" query parameter is required.');
+    }
+
+    // Forward the request to the user-provided external URL with query parameters and return the response
+    return await this.appService.forwardGetRequest(url, query);
   }
 }

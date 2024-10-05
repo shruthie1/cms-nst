@@ -2,6 +2,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import * as schedule from 'node-schedule-tz';
 import { BufferClientService, ClientService, fetchWithTimeout } from 'commonService';
 import { SetupClientQueryDto } from 'commonService/dist/components/clients/dto/setup-client.dto';
+import axios, { AxiosResponse } from 'axios';
 
 @Injectable()
 export class AppService implements OnModuleInit {
@@ -60,5 +61,18 @@ export class AppService implements OnModuleInit {
 
   getHello(): string {
     return 'Hello World!';
+  }
+
+  async forwardGetRequest(externalUrl: string, queryParams: any): Promise<AxiosResponse<any>> {
+    try {
+      // Forward the request using GET method with query parameters
+      const response = await axios.get(externalUrl, { params: queryParams });
+      
+      // Return the response from the external API
+      return response.data;
+    } catch (error) {
+      // Handle the error
+      throw new Error(`Error forwarding GET request: ${error.message}`);
+    }
   }
 }
