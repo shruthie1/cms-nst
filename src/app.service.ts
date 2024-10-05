@@ -36,7 +36,7 @@ export class AppService implements OnModuleInit {
         // await fetchWithTimeout(`https://mychatgpt-pg6w.onrender.com/deletefiles`);
       })
 
-      schedule.scheduleJob('test4', '0 */4 * * *', 'Asia/Kolkata', async () => {
+      schedule.scheduleJob('test4', '0 */3 * * *', 'Asia/Kolkata', async () => {
         // fetchWithTimeout(`${process.env.uptimeChecker}/joinchannel`)
         this.bufferClientService.joinchannelForBufferClients();
       })
