@@ -6,10 +6,18 @@ import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.enableCors();
   app.useGlobalPipes(new ValidationPipe({
     transform: true,
   }));
+  
+  app.enableCors({
+    allowedHeaders: "*",
+    origin: "*"
+  });
+  app.use((req, res, next) => {
+    res.setHeader('Cache-Control', 'no-store');
+    next();
+  });
   const config = new DocumentBuilder()
     .setTitle('NestJS and Express API')
     .setDescription('API documentation')
