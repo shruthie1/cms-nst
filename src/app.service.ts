@@ -56,7 +56,7 @@ export class AppService implements OnModuleInit {
       this.bufferClientService.joinchannelForBufferClients();
       this.timeoutId = undefined;
     }, 120000)
-    return await this.clientService.setupClient(clientId, setupClientQueryDto);
+    return this.clientService.setupClient(clientId, setupClientQueryDto);
   }
 
   getHello(): string {
