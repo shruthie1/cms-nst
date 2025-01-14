@@ -50,6 +50,10 @@ export class AppService implements OnModuleInit {
     }
   }
 
+  refreshmap() {
+    this.clientService.refreshMap()
+  }
+
   async setupClient(clientId: string, setupClientQueryDto: SetupClientQueryDto) {
     clearTimeout(this.timeoutId);
     this.timeoutId = setTimeout(() => {

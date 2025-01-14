@@ -26,6 +26,12 @@ export class AppController {
     process.exit(1)
   }
 
+  @Get('refreshmap')
+  @ApiOperation({ summary: 'refreshmap for Clients' })
+  async refreshmap(): Promise<void> {
+    return this.appService.refreshmap();
+  }
+
   @Get('forward')
   async forward(@Query('url') url: string, @Query() query: any): Promise<any> {
     // Remove 'url' from the query object as it's used separately
