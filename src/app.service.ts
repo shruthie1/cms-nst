@@ -1,6 +1,6 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import * as schedule from 'node-schedule-tz';
-import { BufferClientService, ClientService, fetchWithTimeout } from 'commonService';
+import { BufferClientService, ClientService } from 'commonService';
 import { SetupClientQueryDto } from 'commonService/dist/components/clients/dto/setup-client.dto';
 import axios, { AxiosResponse } from 'axios';
 
