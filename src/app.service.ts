@@ -1,8 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import * as schedule from 'node-schedule-tz';
-import { BufferClientService, ClientService } from 'commonService';
-import { SetupClientQueryDto } from 'commonService/dist/components/clients/dto/setup-client.dto';
 import axios, { AxiosResponse } from 'axios';
+import { ClientService, BufferClientService, SetupClientQueryDto } from 'common-tg-service';
 
 @Injectable()
 export class AppService implements OnModuleInit {

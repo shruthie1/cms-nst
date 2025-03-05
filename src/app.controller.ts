@@ -1,7 +1,7 @@
 import { BadRequestException, Controller, Get, Param, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiOperation } from '@nestjs/swagger';
-import { SetupClientQueryDto } from 'commonService/dist/components/clients/dto/setup-client.dto';
+import { SetupClientQueryDto } from 'common-tg-service';
 
 @Controller()
 export class AppController {
