@@ -3,8 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MiddlewareConsumer } from '@nestjs/common';
 import {
-  BufferClientModule, BuildModule,
-  ChannelsModule, ClientModule,
+  initModule,
+  BufferClientModule,
+  BuildModule,
+  ChannelsModule,
+  ClientModule,
   LoggerMiddleware,
   UpiIdModule,
   UsersModule,
@@ -20,11 +23,12 @@ import {
   ActiveChannelsModule,
   Stat1Module,
   Stat2Module,
-  PromoteStatModule
+  PromoteStatModule,
 } from 'common-tg-service';
 
 @Module({
   imports: [
+    initModule,
     BuildModule,
     ClientModule,
     BufferClientModule,
