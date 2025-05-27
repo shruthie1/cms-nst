@@ -2,58 +2,36 @@ import { Module, forwardRef } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MiddlewareConsumer } from '@nestjs/common';
-import {
-  InitModule,
-  BufferClientModule,
-  BuildModule,
-  ChannelsModule,
-  ClientModule,
-  LoggerMiddleware,
-  UpiIdModule,
-  UsersModule,
-  UserDataModule,
-  PromoteClientModule,
-  TelegramModule,
-  NpointModule,
-  PromoteMsgModule,
-  TransactionModule,
-  ArchivedClientModule,
-  TimestampModule,
-  TgSignupModule,
-  ActiveChannelsModule,
-  Stat1Module,
-  Stat2Module,
-  PromoteStatModule,
-} from 'common-tg-service';
+import * as cts from 'common-tg-service';
 
 @Module({
   imports: [
-    forwardRef(() => InitModule),
-    forwardRef(() => BuildModule),
-    forwardRef(() => ClientModule),
-    forwardRef(() => BufferClientModule),
-    forwardRef(() => ChannelsModule),
-    forwardRef(() => UsersModule),
-    forwardRef(() => UserDataModule),
-    forwardRef(() => PromoteClientModule),
-    forwardRef(() => TelegramModule),
-    forwardRef(() => UpiIdModule),
-    forwardRef(() => NpointModule),
-    forwardRef(() => PromoteMsgModule),
-    forwardRef(() => TransactionModule),
-    forwardRef(() => ArchivedClientModule),
-    forwardRef(() => TimestampModule),
-    forwardRef(() => TgSignupModule),
-    forwardRef(() => ActiveChannelsModule),
-    forwardRef(() => Stat1Module),
-    forwardRef(() => Stat2Module),
-    forwardRef(() => PromoteStatModule),
+    forwardRef(() => cts.InitModule),
+    forwardRef(() => cts.BuildModule),
+    forwardRef(() => cts.ClientModule),
+    forwardRef(() => cts.BufferClientModule),
+    forwardRef(() => cts.ChannelsModule),
+    forwardRef(() => cts.UsersModule),
+    forwardRef(() => cts.UserDataModule),
+    forwardRef(() => cts.PromoteClientModule),
+    forwardRef(() => cts.TelegramModule),
+    forwardRef(() => cts.UpiIdModule),
+    forwardRef(() => cts.NpointModule),
+    forwardRef(() => cts.PromoteMsgModule),
+    forwardRef(() => cts.TransactionModule),
+    forwardRef(() => cts.ArchivedClientModule),
+    forwardRef(() => cts.TimestampModule),
+    forwardRef(() => cts.TgSignupModule),
+    forwardRef(() => cts.ActiveChannelsModule),
+    forwardRef(() => cts.Stat1Module),
+    forwardRef(() => cts.Stat2Module),
+    forwardRef(() => cts.PromoteStatModule),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*');
+    consumer.apply(cts.LoggerMiddleware).forRoutes('*');
   }
 }
