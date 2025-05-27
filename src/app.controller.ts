@@ -1,11 +1,13 @@
 import { BadRequestException, Controller, Get, Param, Query } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ApiOperation } from '@nestjs/swagger';
-import { SetupClientQueryDto } from 'common-tg-service';
+import { SetupClientQueryDto, AppController as ParentAppController } from 'common-tg-service';
 
 @Controller()
-export class AppController {
-  constructor(private readonly appService: AppService) { }
+export class AppController extends ParentAppController {
+  constructor(private readonly appService: AppService) {
+    super();
+  }
 
   @Get()
   getHello(): string {
