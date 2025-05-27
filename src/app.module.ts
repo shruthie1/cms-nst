@@ -3,10 +3,11 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MiddlewareConsumer } from '@nestjs/common';
 import * as cts from 'common-tg-service';
-
+import * as AMS from 'ams-ssk';
 @Module({
   imports: [
     forwardRef(() => cts.InitModule),
+    AMS.FileModule.forRoot(),
     forwardRef(() => cts.BuildModule),
     forwardRef(() => cts.ClientModule),
     forwardRef(() => cts.BufferClientModule),
