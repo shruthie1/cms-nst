@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MiddlewareConsumer } from '@nestjs/common';
 import {
-  initModule,
+  InitModule,
   BufferClientModule,
   BuildModule,
   ChannelsModule,
@@ -28,7 +28,7 @@ import {
 
 @Module({
   imports: [
-    initModule,
+    InitModule,
     BuildModule,
     ClientModule,
     BufferClientModule,

@@ -32,7 +32,7 @@
   "dependencies": {
     "@nestjs/platform-express": "^11.1.2",
     "@nestjs/swagger": "^11.2.0",
-    "common-tg-service": "^1.0.89",
+    "common-tg-service": "^1.0.92",
     "node-schedule-tz": "^1.2.1-4"
   },
   "jest": {
@@ -53,10 +53,10 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "ts-loader": "9.5.1",
+    "ts-loader": "9.5.2",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
-    "typescript": "5.4.2",
+    "typescript": "5.8.3",
     "webpack": "^5.99.9",
     "webpack-cli": "^6.0.1",
     "webpack-node-externals": "^3.0.0"
