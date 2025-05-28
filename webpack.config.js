@@ -21,7 +21,7 @@ const config = {
     },
     devtool: 'source-map',
     externalsPresets: { node: true }, // in order to ignore built-in modules like path, fs, etc.
-    // externals: [nodeExternals()], // in order to ignore all modules in node_modules folder
+    externals: [nodeExternals()], // in order to ignore all modules in node_modules folder
     resolve: {
         // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
         mainFields: ['module', 'main'], // look for `browser` entry point in imported node modules
@@ -37,6 +37,12 @@ const config = {
         },
         modules: ['node_modules']
     },
+    ignoreWarnings: [
+        {
+            module: /node_modules/,
+            message: /Critical dependency: the request of a dependency is an expression/,
+        },
+    ],
     module: {
         rules: [
             {
