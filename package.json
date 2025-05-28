@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "ams-ssk": "^1.0.12",
-    "common-tg-service": "^1.0.96",
+    "common-tg-service": "^1.0.98",
     "node-schedule-tz": "^1.2.1-4"
   },
   "jest": {
@@ -64,7 +64,7 @@
   "optionalDependencies": {
     "@aws-sdk/credential-providers": "^3.817.0",
     "@mongodb-js/zstd": "^2.0.1",
-    "gcp-metadata": "^5.3.0",
+    "gcp-metadata": "^6.1.1",
     "kerberos": "^2.2.2",
     "mongodb-client-encryption": "^6.4.0",
     "snappy": "^7.2.2"
