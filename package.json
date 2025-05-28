@@ -52,6 +52,7 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
+    "@nestjs/cli": "^11.0.7",
     "ts-loader": "9.5.2",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
