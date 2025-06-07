@@ -62,7 +62,7 @@
     "webpack-node-externals": "^3.0.0"
   },
   "optionalDependencies": {
-    "@aws-sdk/credential-providers": "^3.817.0",
+    "@aws-sdk/credential-providers": "^3.826.0",
     "@mongodb-js/zstd": "^2.0.1",
     "gcp-metadata": "^6.1.1",
     "kerberos": "^2.2.2",
