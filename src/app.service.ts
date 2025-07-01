@@ -54,11 +54,11 @@ export class AppService implements OnModuleInit {
   }
 
   async setupClient(clientId: string, setupClientQueryDto: SetupClientQueryDto) {
-    clearTimeout(this.timeoutId);
-    this.timeoutId = setTimeout(() => {
-      this.bufferClientService.joinchannelForBufferClients();
-      this.timeoutId = undefined;
-    }, 120000)
+    // clearTimeout(this.timeoutId);
+    // this.timeoutId = setTimeout(() => {
+    //   this.bufferClientService.joinchannelForBufferClients();
+    //   this.timeoutId = undefined;
+    // }, 120000)
     return this.clientService.setupClient(clientId, setupClientQueryDto);
   }
 
@@ -70,7 +70,6 @@ export class AppService implements OnModuleInit {
     try {
       // Forward the request using GET method with query parameters
       const response = await axios.get(externalUrl, { params: queryParams });
-      
       // Return the response from the external API
       return response.data;
     } catch (error) {
