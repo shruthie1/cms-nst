@@ -27,9 +27,10 @@ import * as AMS from 'ams-ssk';
     forwardRef(() => cts.Stat1Module),
     forwardRef(() => cts.Stat2Module),
     forwardRef(() => cts.PromoteStatModule),
+    forwardRef(() => cts.SessionModule),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, cts.MemoryCleanerService],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
