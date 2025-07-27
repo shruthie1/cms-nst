@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "ams-ssk": "^1.0.12",
-    "common-tg-service": "^1.1.22",
+    "common-tg-service": "^1.1.73",
     "node-schedule-tz": "^1.2.1-4"
   },
   "jest": {
@@ -53,21 +53,21 @@
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.7",
-    "cross-env": "^7.0.3",
+    "cross-env": "^10.0.0",
     "ts-loader": "9.5.2",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.8.3",
-    "webpack": "^5.99.9",
+    "webpack": "^5.100.2",
     "webpack-cli": "^6.0.1",
     "webpack-node-externals": "^3.0.0"
   },
   "optionalDependencies": {
-    "@aws-sdk/credential-providers": "^3.839.0",
+    "@aws-sdk/credential-providers": "^3.848.0",
     "@mongodb-js/zstd": "^2.0.1",
     "gcp-metadata": "^7.0.1",
     "kerberos": "^2.2.2",
     "mongodb-client-encryption": "^6.4.0",
-    "snappy": "^7.2.2"
+    "snappy": "^7.3.0"
   }
 }
