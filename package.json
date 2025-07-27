@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "ams-ssk": "^1.0.12",
-    "common-tg-service": "^1.1.73",
+    "common-tg-service": "^1.1.76",
     "node-schedule-tz": "^1.2.1-4"
   },
   "jest": {
