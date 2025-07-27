@@ -1,64 +1,68 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import * as schedule from 'node-schedule-tz';
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosResponse, AxiosError } from 'axios';
 import { ClientService, BufferClientService, SetupClientQueryDto } from 'common-tg-service';
 
 @Injectable()
 export class AppService implements OnModuleInit {
-  private timeoutId: NodeJS.Timeout;
+  private readonly logger = new Logger(AppService.name);
+
   constructor(
-    private clientService: ClientService,
-    private bufferClientService: BufferClientService,
+    private readonly clientService: ClientService,
+    private readonly bufferClientService: BufferClientService,
   ) {
-    console.log("App Module Constructor initiated !!");
+    this.logger.log('App Module Constructor initiated!!');
   }
 
   onModuleInit() {
-    console.log("App Module initiated !!");
-    try {
-      schedule.scheduleJob('test3', ' 25 2 * * * ', 'Asia/Kolkata', async () => {
-        // checkBufferClients()
-        await this.bufferClientService.checkBufferClients();
-        // Do it in UptimeChecker Service
-        // for (const value of userMap.values()) {
-        //   try {
-        //     const now = new Date();
-        //     if (now.getUTCDate() % 3 === 1) {
-        //       await fetchWithTimeout(`${value.url}leavechannels`);
-        //     }
-        //   } catch (error) {
-        //     console.log("Some Error: ", error.code);
-        //   }
-        //   await sleep(3000)
-        // }
-        // await fetchWithTimeout(`${process.env.uptimeChecker}/joinchannel`)
-        // await fetchWithTimeout(`https://mychatgpt-pg6w.onrender.com/deletefiles`);
-      })
+    this.logger.log('App Module initiated!!');
+    this.scheduleJobs();
 
-      schedule.scheduleJob('test4', '0 */3 * * *', 'Asia/Kolkata', async () => {
-        // fetchWithTimeout(`${process.env.uptimeChecker}/joinchannel`)
-        this.bufferClientService.joinchannelForBufferClients();
-      })
-    } catch (error) {
-      console.log("Some Error: ", error);
-    }
     if (!process.env.LOCAL_SERVER) {
-      setTimeout(() => {
-        this.bufferClientService.joinchannelForBufferClients();
+      // Schedule initial join after 60s only in production
+      setTimeout(async () => {
+        this.logger.log('Initial joinchannelForBufferClients triggered after 60s');
+        await this.safeCall(() => this.bufferClientService.joinchannelForBufferClients());
       }, 60000);
     }
   }
 
+  private scheduleJobs() {
+    try {
+      // 🔁 Every day at 2:25 AM IST
+      schedule.scheduleJob('bufferCheck', '25 2 * * *', 'Asia/Kolkata', async () => {
+        this.logger.log('Running scheduled job: bufferCheck');
+        await this.safeCall(() => this.bufferClientService.checkBufferClients());
+      });
+
+      // 🔁 Every 3 hours
+      schedule.scheduleJob('bufferJoin', '0 */3 * * *', 'Asia/Kolkata', async () => {
+        this.logger.log('Running scheduled job: bufferJoin');
+        await this.safeCall(() => this.bufferClientService.joinchannelForBufferClients());
+      });
+    } catch (error) {
+      this.logger.error('Error scheduling jobs', error);
+    }
+  }
+
+  private async safeCall<T>(task: () => Promise<T>, context = 'Scheduled Task'): Promise<T | undefined> {
+    try {
+      return await task();
+    } catch (error) {
+      const err = error as Error;
+      this.logger.error(`Error during ${context}`, err.stack || err.message);
+      return undefined;
+    }
+  }
+
+
   refreshmap() {
-    this.clientService.refreshMap()
+    this.logger.log('Refreshing client map');
+    this.clientService.refreshMap();
   }
 
   async setupClient(clientId: string, setupClientQueryDto: SetupClientQueryDto) {
-    // clearTimeout(this.timeoutId);
-    // this.timeoutId = setTimeout(() => {
-    //   this.bufferClientService.joinchannelForBufferClients();
-    //   this.timeoutId = undefined;
-    // }, 120000)
+    this.logger.log(`Setting up client: ${clientId}`);
     return this.clientService.setupClient(clientId, setupClientQueryDto);
   }
 
@@ -66,15 +70,15 @@ export class AppService implements OnModuleInit {
     return 'Hello World!';
   }
 
-  async forwardGetRequest(externalUrl: string, queryParams: any): Promise<AxiosResponse<any>> {
+  async forwardGetRequest(externalUrl: string, queryParams: any): Promise<any> {
     try {
-      // Forward the request using GET method with query parameters
-      const response = await axios.get(externalUrl, { params: queryParams });
-      // Return the response from the external API
+      this.logger.log(`Forwarding GET request to ${externalUrl} with params ${JSON.stringify(queryParams)}`);
+      const response: AxiosResponse = await axios.get(externalUrl, { params: queryParams });
       return response.data;
     } catch (error) {
-      // Handle the error
-      throw new Error(`Error forwarding GET request: ${error.message}`);
+      const axiosErr = error as AxiosError;
+      this.logger.error(`Error forwarding GET request: ${axiosErr.message}`, axiosErr.stack);
+      throw new Error(`Error forwarding GET request: ${axiosErr.message}`);
     }
   }
 }
