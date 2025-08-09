@@ -30,8 +30,8 @@
     "start:node": "node  --max-old-space-size=8192 ./out/index.js"
   },
   "dependencies": {
-    "ams-ssk": "^1.0.12",
-    "common-tg-service": "^1.1.78",
+    "ams-ssk": "^1.0.29",
+    "common-tg-service": "^1.2.14",
     "node-schedule-tz": "^1.2.1-4"
   },
   "jest": {
@@ -52,22 +52,22 @@
     "testEnvironment": "node"
   },
   "devDependencies": {
-    "@nestjs/cli": "^11.0.7",
+    "@nestjs/cli": "^11.0.10",
     "cross-env": "^10.0.0",
     "ts-loader": "9.5.2",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
-    "typescript": "5.8.3",
-    "webpack": "^5.100.2",
+    "typescript": "5.9.2",
+    "webpack": "^5.101.0",
     "webpack-cli": "^6.0.1",
     "webpack-node-externals": "^3.0.0"
   },
   "optionalDependencies": {
-    "@aws-sdk/credential-providers": "^3.848.0",
+    "@aws-sdk/credential-providers": "^3.864.0",
     "@mongodb-js/zstd": "^2.0.1",
     "gcp-metadata": "^7.0.1",
     "kerberos": "^2.2.2",
     "mongodb-client-encryption": "^6.4.0",
-    "snappy": "^7.3.0"
+    "snappy": "^7.3.1"
   }
 }

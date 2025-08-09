@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { MiddlewareConsumer } from '@nestjs/common';
 import * as cts from 'common-tg-service';
 import * as AMS from 'ams-ssk';
+import { APP_GUARD } from '@nestjs/core';
 @Module({
   imports: [
     forwardRef(() => cts.InitModule),
@@ -30,7 +31,10 @@ import * as AMS from 'ams-ssk';
     forwardRef(() => cts.SessionModule),
   ],
   controllers: [AppController],
-  providers: [AppService, cts.MemoryCleanerService],
+  providers: [AppService,   {
+      provide: APP_GUARD,
+      useClass: cts.AuthGuard,
+    },],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
