@@ -31,10 +31,10 @@ import { APP_GUARD } from '@nestjs/core';
     forwardRef(() => cts.SessionModule),
   ],
   controllers: [AppController],
-  providers: [AppService,   {
-      provide: APP_GUARD,
-      useClass: cts.AuthGuard,
-    },],
+  providers: [AppService, {
+    provide: APP_GUARD,
+    useClass: cts.AuthGuard,
+  }],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
