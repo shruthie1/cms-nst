@@ -31,11 +31,15 @@ import { APP_GUARD } from '@nestjs/core';
     forwardRef(() => cts.SessionModule),
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService,
+    {
+      provide: APP_GUARD,
+      useClass: cts.AuthGuard,
+    },
+  ],
 })
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(cts.AuthMiddleware).forRoutes('*');
     consumer.apply(cts.LoggerMiddleware).forRoutes('*');
   }
 }
