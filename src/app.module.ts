@@ -8,7 +8,7 @@ import { APP_GUARD } from '@nestjs/core';
 @Module({
   imports: [
     forwardRef(() => cts.InitModule),
-    AMS.FileModule.forRoot(),
+    // AMS.FileModule.forRoot(),
     forwardRef(() => cts.BuildModule),
     forwardRef(() => cts.ClientModule),
     forwardRef(() => cts.BufferClientModule),
