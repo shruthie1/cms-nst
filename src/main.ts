@@ -71,7 +71,7 @@ async function bootstrap() {
   });
 
   mongoose.set('debug', true);
-  app.useGlobalInterceptors(new TimeoutInterceptor(60000));
+  // app.useGlobalInterceptors(new TimeoutInterceptor(60000));
   app.useGlobalFilters(new ExceptionsFilter());
   app.useGlobalPipes(
     new ValidationPipe({

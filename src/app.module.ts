@@ -21,7 +21,6 @@ import { APP_GUARD } from '@nestjs/core';
     forwardRef(() => cts.NpointModule),
     forwardRef(() => cts.PromoteMsgModule),
     forwardRef(() => cts.TransactionModule),
-    forwardRef(() => cts.ArchivedClientModule),
     forwardRef(() => cts.TimestampModule),
     forwardRef(() => cts.TgSignupModule),
     forwardRef(() => cts.ActiveChannelsModule),
