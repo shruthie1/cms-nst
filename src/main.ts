@@ -6,7 +6,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 import * as fs from 'fs';
-import { ExceptionsFilter, Logger } from 'common-tg-service';
+import { ExceptionsFilter, Logger, TimeoutInterceptor } from 'common-tg-service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -71,7 +71,7 @@ async function bootstrap() {
   });
 
   mongoose.set('debug', true);
-
+  app.useGlobalInterceptors(new TimeoutInterceptor(60000));
   app.useGlobalFilters(new ExceptionsFilter());
   app.useGlobalPipes(
     new ValidationPipe({
