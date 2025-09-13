@@ -39,1438 +39,6 @@
         ]
       }
     },
-    "/folders/{folder}/files": {
-      "post": {
-        "description": "Upload single or multiple files to a specified folder",
-        "operationId": "FileController_uploadFiles",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Target folder name",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": false,
-            "in": "query",
-            "description": "Optional custom filename for single file upload",
-            "schema": {}
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "files"
-                ],
-                "properties": {
-                  "files": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    },
-                    "description": "Files to upload"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "summary": "Upload files to a folder",
-        "tags": [
-          "File"
-        ]
-      },
-      "get": {
-        "operationId": "FileController_listFiles",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "summary": "List all files in a folder",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders": {
-      "get": {
-        "operationId": "FileController_listFolders",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Folders listed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FolderResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server error while listing folders",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "summary": "List all folders",
-        "tags": [
-          "File"
-        ]
-      },
-      "post": {
-        "operationId": "FileController_createFolder",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "folderName": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Folder created successfully"
-          },
-          "400": {
-            "description": "Invalid folder name"
-          }
-        },
-        "summary": "Create a new folder",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}": {
-      "get": {
-        "operationId": "FileController_getFolderDetails",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "page",
-            "required": false,
-            "in": "query",
-            "description": "Page number for pagination",
-            "schema": {
-              "type": "number"
-            }
-          },
-          {
-            "name": "limit",
-            "required": false,
-            "in": "query",
-            "description": "Number of files per page",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Folder details retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FolderDetailsResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Folder not found"
-          }
-        },
-        "summary": "Get folder details and list files",
-        "tags": [
-          "File"
-        ]
-      },
-      "delete": {
-        "operationId": "FileController_deleteFolder",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder to delete",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "summary": "Delete a folder and all its contents",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/stream/{folder}/{file}": {
-      "get": {
-        "operationId": "FileController_stream",
-        "parameters": [
-          {
-            "name": "file",
-            "required": true,
-            "in": "path",
-            "description": "Name of the video file",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder containing the file",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/uploadFromUrl": {
-      "post": {
-        "operationId": "FileController_uploadFromUrl",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UploadByUrlDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/files/{filename}/download": {
-      "get": {
-        "operationId": "FileController_downloadFile",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": true,
-            "in": "path",
-            "description": "File name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "summary": "Download a file from a folder",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/files/{filename}/metadata": {
-      "get": {
-        "operationId": "FileController_getFileMetadata",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": true,
-            "in": "path",
-            "description": "File name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "File metadata retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FileMetadataResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "File not found"
-          }
-        },
-        "summary": "Get metadata of a file",
-        "tags": [
-          "File"
-        ]
-      },
-      "put": {
-        "operationId": "FileController_updateFileMetadata",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": true,
-            "in": "path",
-            "description": "File name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "newFilename": {
-                    "type": "string",
-                    "description": "New filename"
-                  },
-                  "newFolder": {
-                    "type": "string",
-                    "description": "New folder"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "File metadata updated successfully"
-          },
-          "400": {
-            "description": "Invalid metadata"
-          },
-          "404": {
-            "description": "File not found"
-          }
-        },
-        "summary": "Update file metadata",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/files/{filename}/move": {
-      "put": {
-        "operationId": "FileController_moveFile",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Current folder of the file",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": true,
-            "in": "path",
-            "description": "Current file name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "newFolder": {
-                    "type": "string"
-                  },
-                  "newFilename": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "File moved successfully"
-          },
-          "400": {
-            "description": "Invalid destination"
-          },
-          "404": {
-            "description": "File not found"
-          }
-        },
-        "summary": "Move or rename a file",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/files/{filename}/copy": {
-      "post": {
-        "operationId": "FileController_copyFile",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Source folder",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": true,
-            "in": "path",
-            "description": "File to copy",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "newFolder": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "File copied successfully"
-          },
-          "400": {
-            "description": "Invalid destination"
-          },
-          "404": {
-            "description": "File not found"
-          }
-        },
-        "summary": "Copy a file to another location",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/files/download-all": {
-      "get": {
-        "operationId": "FileController_downloadAllFiles",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "summary": "Download all files in a folder as a ZIP archive",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/files/temp-links": {
-      "get": {
-        "operationId": "FileController_getTemporaryLinks",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "summary": "Get temporary access links for all files in a folder",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/files/{filename}/temp-link": {
-      "get": {
-        "operationId": "FileController_getTemporaryFileLink",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": true,
-            "in": "path",
-            "description": "File name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "summary": "Generate a temporary access link for a file",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/files/search": {
-      "get": {
-        "operationId": "FileController_searchFiles",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "pattern",
-            "required": true,
-            "in": "query",
-            "description": "Regex pattern for matching filenames",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "summary": "Search for files by name in a folder",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/json/folders/{folder}/files/{filename}": {
-      "get": {
-        "description": "Returns the complete contents of a JSON file",
-        "operationId": "FileController_getJsonFile",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "JSON file contents retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonFileResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "JSON file not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Error parsing JSON file",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Retrieve the entire JSON file",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/json/folders/{folder}/files/{filename}/{path}": {
-      "get": {
-        "description": "Returns a specific value from a JSON file using a path with / as separator",
-        "operationId": "FileController_getNestedJsonValue",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "path",
-            "required": true,
-            "in": "path",
-            "description": "Path to the nested value (e.g., user/profile/name)",
-            "schema": {
-              "example": [
-                "user",
-                "profile",
-                "name"
-              ],
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "JSON value retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonValueResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid path or key not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "JSON file not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Retrieve a nested value from a JSON file by key path",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/json/folders/{folder}/files/{filename}/query": {
-      "get": {
-        "description": "Query JSON data using dot notation and array indices. Example: users[0].profile.name",
-        "operationId": "FileController_queryJsonFile",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "query",
-            "required": true,
-            "in": "query",
-            "description": "JSON path query using dot notation (e.g., users[0].profile.name)",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "JSON value retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/JsonValueResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid query format or path not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "JSON file not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Query a JSON file using dot notation",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/files/{filename}": {
-      "delete": {
-        "operationId": "FileController_deleteFile",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": true,
-            "in": "path",
-            "description": "File name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "summary": "Delete a file from a folder",
-        "tags": [
-          "File"
-        ]
-      },
-      "get": {
-        "operationId": "FileController_getFile",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": true,
-            "in": "path",
-            "description": "File name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "summary": "Retrieve a file from a folder",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/size": {
-      "get": {
-        "operationId": "FileController_getFolderSize",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "summary": "Get the total size of a folder",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/files/{filename}/thumbnail": {
-      "get": {
-        "operationId": "FileController_getThumbnail",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": true,
-            "in": "path",
-            "description": "File name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "summary": "Get a thumbnail of an image or video file",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/rename": {
-      "put": {
-        "operationId": "FileController_renameFolder",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Current folder name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "newFolderName": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Folder renamed successfully"
-          },
-          "400": {
-            "description": "Invalid folder name"
-          },
-          "404": {
-            "description": "Folder not found"
-          }
-        },
-        "summary": "Rename a folder",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/move": {
-      "put": {
-        "operationId": "FileController_moveFolder",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Current folder name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "newLocation": {
-                    "type": "string"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Folder moved successfully"
-          },
-          "400": {
-            "description": "Invalid destination"
-          },
-          "404": {
-            "description": "Folder not found"
-          }
-        },
-        "summary": "Move a folder to a different location",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/files/{filename}/preview": {
-      "get": {
-        "operationId": "FileController_getFilePreview",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": true,
-            "in": "path",
-            "description": "File name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "summary": "Get a preview of a file",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/tree": {
-      "get": {
-        "operationId": "FileController_getFolderTree",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Folder tree retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FolderTreeResponse"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Get a hierarchical tree structure of folders and files",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/files/{filename}/share": {
-      "post": {
-        "operationId": "FileController_generateShareableLink",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": true,
-            "in": "path",
-            "description": "File name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Shareable link generated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ShareableLinkResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "File not found"
-          }
-        },
-        "summary": "Generate a shareable link for a file",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/files/{filename}/lock": {
-      "put": {
-        "operationId": "FileController_lockFile",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": true,
-            "in": "path",
-            "description": "File name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "File is already locked",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "File not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Error locking file",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorResponse"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Lock a file for editing",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/files/{filename}/unlock": {
-      "put": {
-        "operationId": "FileController_unlockFile",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": true,
-            "in": "path",
-            "description": "File name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "summary": "Unlock a file for editing",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/files/recent": {
-      "get": {
-        "operationId": "FileController_getRecentFiles",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": ""
-          }
-        },
-        "summary": "Get a list of recently modified files",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/files/{filename}/versions": {
-      "get": {
-        "operationId": "FileController_getFileVersions",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Folder name",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filename",
-            "required": true,
-            "in": "path",
-            "description": "File name",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "File versions retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FileVersionResponse"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "File not found"
-          }
-        },
-        "summary": "Get different versions of a file",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/metrics/file-operations": {
-      "get": {
-        "description": "Retrieve metrics about recent file operations including success rate and performance data",
-        "operationId": "FileController_getFileOperationMetrics",
-        "parameters": [
-          {
-            "name": "timeWindow",
-            "required": false,
-            "in": "query",
-            "description": "Time window in milliseconds for failure rate calculation",
-            "schema": {
-              "example": 3600000,
-              "type": "number"
-            }
-          },
-          {
-            "name": "limit",
-            "required": false,
-            "in": "query",
-            "description": "Maximum number of metrics to return",
-            "schema": {
-              "example": 100,
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "File operation metrics retrieved successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FileOperationMetricsResponse"
-                }
-              }
-            }
-          }
-        },
-        "summary": "Get file operation metrics",
-        "tags": [
-          "File"
-        ]
-      }
-    },
-    "/folders/{folder}/copy": {
-      "post": {
-        "description": "Creates a copy of a folder and all its contents at a new location",
-        "operationId": "FileController_copyFolder",
-        "parameters": [
-          {
-            "name": "folder",
-            "required": true,
-            "in": "path",
-            "description": "Source folder name to copy",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "destinationFolder"
-                ],
-                "properties": {
-                  "destinationFolder": {
-                    "type": "string",
-                    "description": "Name of the destination folder where the copy will be created"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Folder copied successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "message": {
-                      "type": "string"
-                    },
-                    "sourceFolder": {
-                      "type": "string"
-                    },
-                    "destinationFolder": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid destination or destination already exists"
-          },
-          "404": {
-            "description": "Source folder not found"
-          }
-        },
-        "summary": "Copy a folder to a new location",
-        "tags": [
-          "File"
-        ]
-      }
-    },
     "/builds": {
       "get": {
         "operationId": "BuildController_findOne",
@@ -1524,11 +92,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "The user data has been successfully created."
-          },
-          "400": {
-            "description": "Invalid input data."
+          "default": {
+            "description": "The user data has been successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
           }
         },
         "summary": "Create user data",
@@ -1540,8 +112,18 @@
         "operationId": "ClientController_findAll",
         "parameters": [],
         "responses": {
-          "200": {
-            "description": "All user data returned successfully."
+          "default": {
+            "description": "All user data returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Client"
+                  }
+                }
+              }
+            }
           }
         },
         "summary": "Get all user data",
@@ -1700,8 +282,18 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Matching user data returned successfully."
+          "default": {
+            "description": "Matching user data returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Client"
+                  }
+                }
+              }
+            }
           }
         },
         "summary": "Search user data",
@@ -1725,8 +317,42 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Clients with matching promote mobiles returned successfully."
+          "default": {
+            "description": "Clients with matching promote mobiles returned successfully.",
+            "schema": {
+              "properties": {
+                "clients": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Client"
+                  }
+                },
+                "matches": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "clientId": {
+                        "type": "string"
+                      },
+                      "mobile": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "searchedMobile": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Search clients by promote mobile numbers",
@@ -1755,8 +381,45 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Enhanced search results with promote mobile context."
+          "default": {
+            "description": "Enhanced search results with promote mobile context.",
+            "schema": {
+              "properties": {
+                "clients": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Client"
+                  }
+                },
+                "searchType": {
+                  "type": "string"
+                },
+                "promoteMobileMatches": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "clientId": {
+                        "type": "string"
+                      },
+                      "mobile": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "totalResults": {
+                  "type": "number"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Enhanced search with promote mobile support",
@@ -1773,14 +436,22 @@
             "name": "clientId",
             "required": true,
             "in": "path",
+            "description": "Client ID",
             "schema": {
               "type": "string"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "Return the user data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "summary": "Get user data by ID",
@@ -1794,11 +465,53 @@
         "operationId": "ClientController_findAllMasked",
         "parameters": [],
         "responses": {
-          "200": {
-            "description": "All user data returned successfully."
+          "default": {
+            "description": "All user data returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Client"
+                  }
+                }
+              }
+            }
           }
         },
         "summary": "Get all user data with masked fields",
+        "tags": [
+          "Clients"
+        ]
+      }
+    },
+    "/clients/maskedCls/{clientId}": {
+      "get": {
+        "operationId": "ClientController_findOneMasked",
+        "parameters": [
+          {
+            "name": "clientId",
+            "required": true,
+            "in": "path",
+            "description": "Client ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "User data returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
+          }
+        },
+        "summary": "Get user data with masked fields by ID",
         "tags": [
           "Clients"
         ]
@@ -1809,11 +522,8 @@
         "operationId": "ClientController_syncNpoint",
         "parameters": [],
         "responses": {
-          "200": {
+          "default": {
             "description": "Clients synchronized successfully with npoint."
-          },
-          "500": {
-            "description": "Internal server error during synchronization."
           }
         },
         "summary": "Sync clients with npoint service",
@@ -1830,17 +540,22 @@
             "name": "clientId",
             "required": true,
             "in": "path",
+            "description": "Client ID",
             "schema": {
               "type": "string"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "User data returned successfully."
-          },
-          "404": {
-            "description": "User data not found."
+          "default": {
+            "description": "User data returned successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
           }
         },
         "summary": "Get user data by ID",
@@ -1855,6 +570,7 @@
             "name": "clientId",
             "required": true,
             "in": "path",
+            "description": "Client ID",
             "schema": {
               "type": "string"
             }
@@ -1871,11 +587,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "The user data has been successfully updated."
-          },
-          "404": {
-            "description": "User data not found."
+          "default": {
+            "description": "The user data has been successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
           }
         },
         "summary": "Update user data by ID",
@@ -1890,17 +610,22 @@
             "name": "clientId",
             "required": true,
             "in": "path",
+            "description": "Client ID",
             "schema": {
               "type": "string"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": "The user data has been successfully deleted."
-          },
-          "404": {
-            "description": "User data not found."
+          "default": {
+            "description": "The user data has been successfully deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
           }
         },
         "summary": "Delete user data by ID",
@@ -1937,11 +662,8 @@
           }
         },
         "responses": {
-          "200": {
+          "default": {
             "description": "Query executed successfully."
-          },
-          "400": {
-            "description": "Invalid query."
           }
         },
         "summary": "Execute a custom MongoDB query",
@@ -1980,11 +702,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Mobile number assigned as promote mobile successfully."
-          },
-          "404": {
-            "description": "Client not found."
+          "default": {
+            "description": "Mobile number assigned as promote mobile successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
           }
         },
         "summary": "Add a mobile number as a promote mobile for a specific client",
@@ -2023,11 +749,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Promote mobile assignment removed successfully."
-          },
-          "404": {
-            "description": "Client not found."
+          "default": {
+            "description": "Promote mobile assignment removed successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Client"
+                }
+              }
+            }
           }
         },
         "summary": "Remove a promote mobile assignment from a specific client",
@@ -2051,8 +781,72 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "IP information retrieved successfully"
+          "default": {
+            "description": "IP information retrieved successfully",
+            "schema": {
+              "properties": {
+                "clientId": {
+                  "type": "string"
+                },
+                "mobiles": {
+                  "type": "object",
+                  "properties": {
+                    "mainMobile": {
+                      "type": "object",
+                      "properties": {
+                        "mobile": {
+                          "type": "string"
+                        },
+                        "hasIp": {
+                          "type": "boolean"
+                        },
+                        "ipAddress": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "promoteMobiles": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "mobile": {
+                            "type": "string"
+                          },
+                          "hasIp": {
+                            "type": "boolean"
+                          },
+                          "ipAddress": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "needingAssignment": {
+                  "type": "object",
+                  "properties": {
+                    "mainMobile": {
+                      "type": "string"
+                    },
+                    "promoteMobiles": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get IP assignment information for a client",
@@ -2085,8 +879,29 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "IP address retrieved successfully"
+          "default": {
+            "description": "IP address retrieved successfully",
+            "schema": {
+              "properties": {
+                "mobile": {
+                  "type": "string"
+                },
+                "ipAddress": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "hasAssignment": {
+                  "type": "boolean"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get IP address for a specific mobile number",
@@ -2108,8 +923,25 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "IP released successfully"
+          "default": {
+            "description": "IP released successfully",
+            "schema": {
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Release IP from a mobile number",
@@ -2133,11 +965,28 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "IPs assigned successfully"
-          },
-          "400": {
-            "description": "Assignment failed"
+          "default": {
+            "description": "IPs assigned successfully",
+            "schema": {
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "object"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Auto-assign IPs to all client mobile numbers (Simplified System)",
@@ -2161,8 +1010,50 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Mobile numbers needing IP assignment"
+          "default": {
+            "description": "Mobile numbers needing IP assignment",
+            "schema": {
+              "properties": {
+                "clientId": {
+                  "type": "string"
+                },
+                "mobilesNeedingIps": {
+                  "type": "object",
+                  "properties": {
+                    "mainMobile": {
+                      "type": "string"
+                    },
+                    "promoteMobiles": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                },
+                "summary": {
+                  "type": "object",
+                  "properties": {
+                    "totalNeedingAssignment": {
+                      "type": "number"
+                    },
+                    "mainMobileNeedsIp": {
+                      "type": "boolean"
+                    },
+                    "promoteMobilesNeedingIp": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get mobile numbers that need IP assignment",
@@ -2186,8 +1077,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BufferClient"
+                }
+              }
+            }
           }
         },
         "summary": "Create user data",
@@ -2199,8 +1097,18 @@
         "operationId": "BufferClientController_findAll",
         "parameters": [],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BufferClient"
+                  }
+                }
+              }
+            }
           }
         },
         "summary": "Get all user data",
@@ -2214,59 +1122,82 @@
         "operationId": "BufferClientController_search",
         "parameters": [
           {
-            "name": "tgId",
-            "required": false,
-            "in": "query",
-            "description": "Telegram ID of the client",
-            "schema": {
-              "example": "123456789",
-              "type": "string"
-            }
-          },
-          {
             "name": "mobile",
             "required": false,
             "in": "query",
-            "description": "Mobile number of the client",
+            "description": "Mobile number to search for",
             "schema": {
-              "example": "+1234567890",
               "type": "string"
             }
           },
           {
-            "name": "availableDate",
+            "name": "clientId",
             "required": false,
             "in": "query",
-            "description": "availableDate of the bufferClient",
+            "description": "Client ID to search for",
             "schema": {
-              "example": "2023-06-22",
               "type": "string"
             }
           },
           {
-            "name": "session",
+            "name": "username",
             "required": false,
             "in": "query",
-            "description": "Session identifier",
+            "description": "Username to search for",
             "schema": {
-              "example": "session123",
               "type": "string"
             }
           },
           {
-            "name": "channels",
+            "name": "name",
             "required": false,
             "in": "query",
-            "description": "Channel Count",
+            "description": "Name to search for",
             "schema": {
-              "example": 23,
-              "type": "number"
+              "type": "string"
+            }
+          },
+          {
+            "name": "channelLink",
+            "required": false,
+            "in": "query",
+            "description": "Channel link to search for",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "repl",
+            "required": false,
+            "in": "query",
+            "description": "Repl link to search for",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isActive",
+            "required": false,
+            "in": "query",
+            "description": "Filter by active status",
+            "schema": {
+              "type": "boolean"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/BufferClient"
+                  }
+                }
+              }
+            }
           }
         },
         "summary": "Search user data",
@@ -2280,8 +1211,15 @@
         "operationId": "BufferClientController_updateInfo",
         "parameters": [],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "summary": "Update promote Clients Info",
@@ -2295,8 +1233,15 @@
         "operationId": "BufferClientController_joinChannelsforBufferClients",
         "parameters": [],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "summary": "Join Channels for BufferClients",
@@ -2310,8 +1255,15 @@
         "operationId": "BufferClientController_checkbufferClients",
         "parameters": [],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "summary": "Check Buffer Clients",
@@ -2329,14 +1281,36 @@
           "content": {
             "application/json": {
               "schema": {
+                "type": "object",
+                "properties": {
+                  "goodIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "badIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
                 "$ref": "#/components/schemas/Object"
               }
             }
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "summary": "Add New Users to Buffer Clients",
@@ -2360,8 +1334,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BufferClient"
+                }
+              }
+            }
           }
         },
         "summary": "Set as Buffer Client",
@@ -2378,14 +1359,22 @@
             "name": "mobile",
             "required": true,
             "in": "path",
+            "description": "User mobile number",
             "schema": {
               "type": "string"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BufferClient"
+                }
+              }
+            }
           }
         },
         "summary": "Get user data by ID",
@@ -2400,6 +1389,7 @@
             "name": "mobile",
             "required": true,
             "in": "path",
+            "description": "User mobile number",
             "schema": {
               "type": "string"
             }
@@ -2416,8 +1406,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BufferClient"
+                }
+              }
+            }
           }
         },
         "summary": "Update user data by ID",
@@ -2432,6 +1429,7 @@
             "name": "mobile",
             "required": true,
             "in": "path",
+            "description": "User mobile number",
             "schema": {
               "type": "string"
             }
@@ -2448,8 +1446,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BufferClient"
+                }
+              }
+            }
           }
         },
         "summary": "Update user data by ID",
@@ -2464,13 +1469,14 @@
             "name": "mobile",
             "required": true,
             "in": "path",
+            "description": "User mobile number",
             "schema": {
               "type": "string"
             }
           }
         ],
         "responses": {
-          "200": {
+          "default": {
             "description": ""
           }
         },
@@ -2495,8 +1501,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Execute a custom MongoDB query",
@@ -3117,10 +2130,12 @@
     },
     "/userData": {
       "post": {
+        "description": "Creates a new user data entry in the database.",
         "operationId": "UserDataController_create",
         "parameters": [],
         "requestBody": {
           "required": true,
+          "description": "User data to create",
           "content": {
             "application/json": {
               "schema": {
@@ -3131,7 +2146,17 @@
         },
         "responses": {
           "201": {
-            "description": ""
+            "description": "User data successfully created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data."
           }
         },
         "summary": "Create user data",
@@ -3140,11 +2165,22 @@
         ]
       },
       "get": {
+        "description": "Retrieves all user data entries from the database.",
         "operationId": "UserDataController_findAll",
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "List of all user data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserData"
+                  }
+                }
+              }
+            }
           }
         },
         "summary": "Get all user data",
@@ -3155,6 +2191,7 @@
     },
     "/userData/search": {
       "get": {
+        "description": "Searches user data based on provided query parameters.",
         "operationId": "UserDataController_search",
         "parameters": [
           {
@@ -3278,8 +2315,9 @@
             "name": "profile",
             "required": false,
             "in": "query",
-            "description": "User profile",
+            "description": "User profile identifier",
             "schema": {
+              "example": "user123",
               "type": "string"
             }
           },
@@ -3287,8 +2325,9 @@
             "name": "chatId",
             "required": false,
             "in": "query",
-            "description": "Chat ID",
+            "description": "Chat ID associated with the user",
             "schema": {
+              "example": "chat456",
               "type": "string"
             }
           },
@@ -3305,7 +2344,9 @@
             "name": "banned",
             "required": false,
             "in": "query",
+            "description": "Filter for banned users",
             "schema": {
+              "example": false,
               "type": "boolean"
             }
           },
@@ -3313,14 +2354,29 @@
             "name": "isTesting",
             "required": false,
             "in": "query",
+            "description": "Filter for testing users",
             "schema": {
+              "example": true,
               "type": "boolean"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "List of matching user data.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserData"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query parameters."
           }
         },
         "summary": "Search user data",
@@ -3331,19 +2387,23 @@
     },
     "/userData/updateAll/{chatId}": {
       "patch": {
+        "description": "Updates all user data entries associated with a specific chat ID.",
         "operationId": "UserDataController_updateAll",
         "parameters": [
           {
             "name": "chatId",
             "required": true,
             "in": "path",
+            "description": "Chat ID to update user data for",
             "schema": {
+              "example": "chat456",
               "type": "string"
             }
           }
         ],
         "requestBody": {
           "required": true,
+          "description": "User data fields to update",
           "content": {
             "application/json": {
               "schema": {
@@ -3354,10 +2414,23 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "User data successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data."
+          },
+          "404": {
+            "description": "No user data found for the given chat ID."
           }
         },
-        "summary": "Update user data by ID",
+        "summary": "Update all user data by chat ID",
         "tags": [
           "UserData of TG clients"
         ]
@@ -3365,13 +2438,16 @@
     },
     "/userData/{profile}/{chatId}": {
       "get": {
+        "description": "Retrieves a specific user data entry by profile and chat ID.",
         "operationId": "UserDataController_findOne",
         "parameters": [
           {
             "name": "profile",
             "required": true,
             "in": "path",
+            "description": "User profile identifier",
             "schema": {
+              "example": "user123",
               "type": "string"
             }
           },
@@ -3379,29 +2455,44 @@
             "name": "chatId",
             "required": true,
             "in": "path",
+            "description": "Chat ID associated with the user",
             "schema": {
+              "example": "chat456",
               "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "User data found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserData"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User data not found."
           }
         },
-        "summary": "Get user data by ID",
+        "summary": "Get user data by profile and chat ID",
         "tags": [
           "UserData of TG clients"
         ]
       },
       "patch": {
+        "description": "Updates a specific user data entry identified by profile and chat ID.",
         "operationId": "UserDataController_update",
         "parameters": [
           {
             "name": "profile",
             "required": true,
             "in": "path",
+            "description": "User profile identifier",
             "schema": {
+              "example": "user123",
               "type": "string"
             }
           },
@@ -3409,13 +2500,16 @@
             "name": "chatId",
             "required": true,
             "in": "path",
+            "description": "Chat ID associated with the user",
             "schema": {
+              "example": "chat456",
               "type": "string"
             }
           }
         ],
         "requestBody": {
           "required": true,
+          "description": "User data fields to update",
           "content": {
             "application/json": {
               "schema": {
@@ -3426,22 +2520,38 @@
         },
         "responses": {
           "200": {
-            "description": ""
+            "description": "User data successfully updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserData"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid input data."
+          },
+          "404": {
+            "description": "User data not found."
           }
         },
-        "summary": "Update user data by ID",
+        "summary": "Update user data by profile and chat ID",
         "tags": [
           "UserData of TG clients"
         ]
       },
       "delete": {
+        "description": "Deletes a specific user data entry identified by profile and chat ID.",
         "operationId": "UserDataController_remove",
         "parameters": [
           {
             "name": "profile",
             "required": true,
             "in": "path",
+            "description": "User profile identifier",
             "schema": {
+              "example": "user123",
               "type": "string"
             }
           },
@@ -3449,17 +2559,29 @@
             "name": "chatId",
             "required": true,
             "in": "path",
+            "description": "Chat ID associated with the user",
             "schema": {
+              "example": "chat456",
               "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "User data successfully deleted.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserData"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "User data not found."
           }
         },
-        "summary": "Delete user data by ID",
+        "summary": "Delete user data by profile and chat ID",
         "tags": [
           "UserData of TG clients"
         ]
@@ -3467,22 +2589,29 @@
     },
     "/userData/clear-count": {
       "get": {
+        "description": "Clears the count for user data, optionally filtered by chat ID.",
         "operationId": "UserDataController_clearCount",
         "parameters": [
           {
             "name": "chatId",
-            "required": true,
+            "required": false,
             "in": "query",
+            "description": "Chat ID to clear count for",
             "schema": {
+              "example": "chat456",
               "type": "string"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Count cleared successfully."
+          },
+          "400": {
+            "description": "Invalid chat ID."
           }
         },
+        "summary": "Clear count for user data",
         "tags": [
           "UserData of TG clients"
         ]
@@ -3490,11 +2619,59 @@
     },
     "/userData/query": {
       "post": {
+        "description": "Executes a custom MongoDB query with optional sorting, limiting, and skipping.",
         "operationId": "UserDataController_executeQuery",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "MongoDB query parameters",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "query": {
+                    "type": "object",
+                    "description": "MongoDB query object",
+                    "example": {
+                      "profile": "user123"
+                    }
+                  },
+                  "sort": {
+                    "type": "object",
+                    "description": "Sort criteria",
+                    "example": {
+                      "createdAt": -1
+                    }
+                  },
+                  "limit": {
+                    "type": "number",
+                    "description": "Maximum number of results",
+                    "example": 10
+                  },
+                  "skip": {
+                    "type": "number",
+                    "description": "Number of results to skip",
+                    "example": 0
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
-          "201": {
-            "description": ""
+          "200": {
+            "description": "Query executed successfully.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query parameters."
           }
         },
         "summary": "Execute a custom MongoDB query",
@@ -3518,8 +2695,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PromoteClient"
+                }
+              }
+            }
           }
         },
         "summary": "Create user data",
@@ -3541,8 +2725,18 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PromoteClient"
+                  }
+                }
+              }
+            }
           }
         },
         "summary": "Get all user data",
@@ -3618,8 +2812,18 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PromoteClient"
+                  }
+                }
+              }
+            }
           }
         },
         "summary": "Search user data",
@@ -3633,8 +2837,15 @@
         "operationId": "PromoteClientController_joinChannelsforPromoteClients",
         "parameters": [],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "summary": "Join Channels for PromoteClients",
@@ -3648,8 +2859,15 @@
         "operationId": "PromoteClientController_updateInfo",
         "parameters": [],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "summary": "Update promote Clients Info",
@@ -3663,8 +2881,15 @@
         "operationId": "PromoteClientController_checkpromoteClients",
         "parameters": [],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "summary": "Check Promote Clients",
@@ -3708,8 +2933,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "summary": "Add New Users to Promote Clients",
@@ -3733,8 +2965,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PromoteClient"
+                }
+              }
+            }
           }
         },
         "summary": "Set as Promote Client",
@@ -3751,14 +2990,22 @@
             "name": "mobile",
             "required": true,
             "in": "path",
+            "description": "User mobile number",
             "schema": {
               "type": "string"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PromoteClient"
+                }
+              }
+            }
           }
         },
         "summary": "Get user data by ID",
@@ -3773,6 +3020,7 @@
             "name": "mobile",
             "required": true,
             "in": "path",
+            "description": "User mobile number",
             "schema": {
               "type": "string"
             }
@@ -3789,8 +3037,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PromoteClient"
+                }
+              }
+            }
           }
         },
         "summary": "Update user data by ID",
@@ -3805,6 +3060,7 @@
             "name": "mobile",
             "required": true,
             "in": "path",
+            "description": "User mobile number",
             "schema": {
               "type": "string"
             }
@@ -3821,8 +3077,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PromoteClient"
+                }
+              }
+            }
           }
         },
         "summary": "Update user data by ID",
@@ -3837,13 +3100,14 @@
             "name": "mobile",
             "required": true,
             "in": "path",
+            "description": "User mobile number",
             "schema": {
               "type": "string"
             }
           }
         ],
         "responses": {
-          "200": {
+          "default": {
             "description": ""
           }
         },
@@ -3868,8 +3132,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Execute a custom MongoDB query",
@@ -3883,8 +3154,15 @@
         "operationId": "PromoteClientController_getPromoteClientDistribution",
         "parameters": [],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get promote client distribution per client",
@@ -3908,8 +3186,18 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PromoteClient"
+                  }
+                }
+              }
+            }
           }
         },
         "summary": "Get promote clients by status",
@@ -3971,8 +3259,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PromoteClient"
+                }
+              }
+            }
           }
         },
         "summary": "Update status of a promote client",
@@ -4012,8 +3307,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PromoteClient"
+                }
+              }
+            }
           }
         },
         "summary": "Mark a promote client as active",
@@ -4056,8 +3358,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PromoteClient"
+                }
+              }
+            }
           }
         },
         "summary": "Mark a promote client as inactive",
@@ -4122,8 +3431,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PromoteClient"
+                }
+              }
+            }
           }
         },
         "summary": "Update last used timestamp for a promote client",
@@ -4156,8 +3472,18 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PromoteClient"
+                  }
+                }
+              }
+            }
           }
         },
         "summary": "Get least recently used promote clients for a specific client",
@@ -4181,8 +3507,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PromoteClient"
+                }
+              }
+            }
           }
         },
         "summary": "Get next available promote client for a specific client",
@@ -4215,8 +3548,18 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PromoteClient"
+                  }
+                }
+              }
+            }
           }
         },
         "summary": "Get promote clients that haven't been used for a specified time period",
@@ -4240,8 +3583,32 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalClients": {
+                      "type": "number"
+                    },
+                    "neverUsed": {
+                      "type": "number"
+                    },
+                    "usedInLast24Hours": {
+                      "type": "number"
+                    },
+                    "usedInLastWeek": {
+                      "type": "number"
+                    },
+                    "averageUsageGap": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
           }
         },
         "summary": "Get usage statistics for promote clients",
@@ -4282,24 +3649,25 @@
               "default": true,
               "type": "boolean"
             }
-          },
-          {
-            "name": "timeout",
-            "required": false,
-            "in": "query",
-            "description": "Connection timeout in milliseconds",
-            "schema": {
-              "default": 30000,
-              "type": "number"
-            }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successfully connected"
-          },
-          "400": {
-            "description": "Connection failed"
+          "default": {
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Connect to Telegram",
@@ -4323,8 +3691,22 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Successfully disconnected"
+          "default": {
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Disconnect from Telegram",
@@ -4338,8 +3720,22 @@
         "operationId": "TelegramController_disconnectAll",
         "parameters": [],
         "responses": {
-          "200": {
-            "description": "All clients disconnected successfully"
+          "default": {
+            "schema": {
+              "properties": {
+                "message": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Disconnect all clients",
@@ -4354,14 +3750,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ConnectionStatsDto"
-                }
-              }
-            }
+            "description": ""
           }
         },
         "summary": "Get connection statistics",
@@ -4385,7 +3774,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "default": {
             "description": "",
             "content": {
               "application/json": {
@@ -4394,9 +3783,6 @@
                 }
               }
             }
-          },
-          "404": {
-            "description": "Client not found"
           }
         },
         "summary": "Get connection state for a client",
@@ -4410,8 +3796,15 @@
         "operationId": "TelegramController_getActiveConnectionCount",
         "parameters": [],
         "responses": {
-          "200": {
-            "description": "Number of active connections"
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "number"
+                }
+              }
+            }
           }
         },
         "summary": "Get active connection count",
@@ -4435,8 +3828,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Profile retrieved successfully"
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get current user profile",
@@ -4469,8 +3869,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Entity retrieved successfully"
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get Entity profile",
@@ -4504,8 +3911,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Update profile information",
@@ -4539,8 +3953,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Set profile photo",
@@ -4564,8 +3985,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Delete all profile photos",
@@ -4605,8 +4033,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get chat messages",
@@ -4627,9 +4062,53 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "chatId": {
+                    "type": "string"
+                  },
+                  "messageId": {
+                    "type": "number"
+                  },
+                  "text": {
+                    "type": "string"
+                  },
+                  "media": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "photo",
+                          "video",
+                          "document"
+                        ]
+                      },
+                      "url": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Edit message",
@@ -4648,7 +4127,6 @@
             "in": "path",
             "description": "Mobile number of the user account to send the message from",
             "schema": {
-              "example": "1234567890",
               "type": "string"
             }
           }
@@ -4664,8 +4142,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Send a Telegram message as a user",
@@ -4699,8 +4184,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Forward messages",
@@ -4734,8 +4226,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Process operations in batches",
@@ -4753,6 +4252,7 @@
             "name": "mobile",
             "required": true,
             "in": "path",
+            "description": "Mobile number",
             "schema": {
               "type": "string"
             }
@@ -4887,11 +4387,142 @@
               "format": "date-time",
               "type": "string"
             }
+          },
+          {
+            "description": "Chat ID to search in (required for chat-specific search)",
+            "required": false,
+            "name": "chatId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Search query string",
+            "required": false,
+            "name": "query",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "description": "Filter by multiple types options",
+            "required": false,
+            "name": "types",
+            "in": "query",
+            "schema": {
+              "default": [
+                "all",
+                "text",
+                "photo",
+                "video",
+                "voice",
+                "document",
+                "roundVideo",
+                "roundVoice",
+                "sticker",
+                "animation",
+                "contact",
+                "music",
+                "chatPhoto"
+              ],
+              "example": [
+                "text",
+                "photo"
+              ],
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "all",
+                  "text",
+                  "photo",
+                  "video",
+                  "voice",
+                  "document",
+                  "roundVideo",
+                  "roundVoice",
+                  "sticker",
+                  "animation",
+                  "contact",
+                  "music",
+                  "chatPhoto"
+                ]
+              }
+            }
+          },
+          {
+            "description": "Minimum message ID for filtering",
+            "required": false,
+            "name": "minId",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "description": "Maximum message ID for filtering",
+            "required": false,
+            "name": "maxId",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "description": "Maximum number of messages to retrieve",
+            "required": false,
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 500,
+              "type": "number"
+            }
+          },
+          {
+            "description": "Offset ID for pagination",
+            "required": false,
+            "name": "offsetId",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "description": "Offset date as Unix timestamp",
+            "required": false,
+            "name": "offsetDate",
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "description": "Start date for filtering messages by date range",
+            "required": false,
+            "name": "startDate",
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
+          },
+          {
+            "description": "End date for filtering messages by date range",
+            "required": false,
+            "name": "endDate",
+            "in": "query",
+            "schema": {
+              "format": "date-time",
+              "type": "string"
+            }
           }
         ],
         "responses": {
-          "200": {
-            "description": "Messages successfully found",
+          "default": {
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
@@ -4899,15 +4530,6 @@
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid request parameters"
-          },
-          "401": {
-            "description": "Unauthorized access"
-          },
-          "404": {
-            "description": "Mobile number not registered"
           }
         },
         "summary": "Search messages in Telegram",
@@ -4939,8 +4561,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get channel information",
@@ -4982,8 +4611,15 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Forward media messages to me",
@@ -5016,8 +4652,15 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Leave channel",
@@ -5036,7 +4679,6 @@
             "in": "path",
             "description": "Mobile number of the user whose username should be updated",
             "schema": {
-              "example": "1234567890",
               "type": "string"
             }
           }
@@ -5052,8 +4694,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Update the Telegram username of a user",
@@ -5077,8 +4726,15 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Setup two-factor authentication",
@@ -5102,8 +4758,15 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Update privacy settings",
@@ -5137,8 +4800,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Update multiple privacy settings",
@@ -5162,8 +4832,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Active sessions retrieved successfully"
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get active sessions",
@@ -5185,8 +4862,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Other sessions terminated successfully"
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Terminate other sessions",
@@ -5210,8 +4894,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "New session created successfully"
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Create new session",
@@ -5235,8 +4926,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get session information",
@@ -5259,9 +4957,41 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "hash": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "app",
+                      "web"
+                    ]
+                  },
+                  "exceptCurrent": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Terminate specific session",
@@ -5275,7 +5005,7 @@
         "operationId": "TelegramController_getConnectionStatus",
         "parameters": [],
         "responses": {
-          "200": {
+          "default": {
             "description": "",
             "content": {
               "application/json": {
@@ -5307,8 +5037,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get call log statistics",
@@ -5342,8 +5079,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Contacts added successfully"
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Add multiple contacts in bulk",
@@ -5367,8 +5111,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Contacts retrieved successfully"
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get all contacts",
@@ -5402,8 +5153,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Send media message",
@@ -5443,8 +5201,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Download media from a message",
@@ -5478,8 +5243,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Send media album (multiple photos/videos)",
@@ -5563,7 +5335,7 @@
           },
           {
             "name": "all",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
               "type": "boolean"
@@ -5571,8 +5343,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get media metadata from a chat",
@@ -5661,7 +5440,7 @@
           }
         ],
         "responses": {
-          "200": {
+          "default": {
             "description": "",
             "content": {
               "application/json": {
@@ -5705,8 +5484,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get group members",
@@ -5738,8 +5524,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Add members to a group",
@@ -5771,8 +5564,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Remove members from a group",
@@ -5805,8 +5605,15 @@
           }
         ],
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Block a chat/user",
@@ -5825,7 +5632,6 @@
             "in": "path",
             "description": "Mobile number of the user whose chat should be deleted",
             "schema": {
-              "example": "1234567890",
               "type": "string"
             }
           },
@@ -5835,7 +5641,6 @@
             "in": "query",
             "description": "Username or Peer ID of the chat to delete",
             "schema": {
-              "example": "someusername",
               "type": "string"
             }
           },
@@ -5845,7 +5650,6 @@
             "in": "query",
             "description": "Delete messages with ID ≤ maxId",
             "schema": {
-              "example": 100000,
               "type": "number"
             }
           },
@@ -5856,7 +5660,6 @@
             "description": "Only clear history for this user",
             "schema": {
               "default": true,
-              "example": false,
               "type": "boolean"
             }
           },
@@ -5867,7 +5670,6 @@
             "description": "Delete for everyone if possible",
             "schema": {
               "default": false,
-              "example": true,
               "type": "boolean"
             }
           },
@@ -5877,7 +5679,6 @@
             "in": "query",
             "description": "Minimum date (UNIX timestamp)",
             "schema": {
-              "example": 1609459200,
               "type": "number"
             }
           },
@@ -5887,14 +5688,20 @@
             "in": "query",
             "description": "Maximum date (UNIX timestamp)",
             "schema": {
-              "example": 1612137600,
               "type": "number"
             }
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Delete or clear a chat history for a user",
@@ -5942,8 +5749,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Send message with inline button",
@@ -5997,8 +5811,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get all dialogs",
@@ -6022,8 +5843,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Last active time retrieved successfully"
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get last active time",
@@ -6057,8 +5885,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Create a new group with advanced options",
@@ -6092,8 +5927,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Update group settings",
@@ -6127,8 +5969,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Promote or demote group admins",
@@ -6162,8 +6011,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Clean up chat history",
@@ -6245,8 +6101,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Schedule a message",
@@ -6279,8 +6142,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get scheduled messages",
@@ -6303,9 +6173,40 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "chatId": {
+                    "type": "string"
+                  },
+                  "url": {
+                    "type": "string"
+                  },
+                  "duration": {
+                    "type": "number"
+                  },
+                  "caption": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Send voice message",
@@ -6424,11 +6325,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "View once media sent successfully"
-          },
-          "400": {
-            "description": "Failed to send view once media"
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Send a view once (disappearing) media message",
@@ -6476,8 +6381,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get chat history with metadata",
@@ -6511,8 +6423,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Promote members to admin",
@@ -6546,8 +6465,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Demote admin to regular member",
@@ -6570,9 +6496,34 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "groupId": {
+                    "type": "string"
+                  },
+                  "userId": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Unblock a user in a group",
@@ -6605,8 +6556,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get list of group admins",
@@ -6639,8 +6597,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get list of banned users in a group",
@@ -6674,8 +6639,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Export contacts in vCard or CSV format",
@@ -6705,15 +6677,33 @@
               "schema": {
                 "type": "array",
                 "items": {
-                  "type": "string"
+                  "type": "object",
+                  "properties": {
+                    "firstName": {
+                      "type": "string"
+                    },
+                    "lastName": {
+                      "type": "string"
+                    },
+                    "phone": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Import contacts from a list",
@@ -6747,8 +6737,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Manage blocked contacts",
@@ -6772,8 +6769,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "Contact statistics retrieved successfully"
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get contact activity statistics",
@@ -6807,8 +6811,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Create a new chat folder",
@@ -6832,8 +6843,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get all chat folders",
@@ -6856,9 +6874,52 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "chatId": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "about": {
+                    "type": "string"
+                  },
+                  "photo": {
+                    "type": "string"
+                  },
+                  "slowMode": {
+                    "type": "number"
+                  },
+                  "linkedChat": {
+                    "type": "string"
+                  },
+                  "defaultSendAs": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Update chat settings",
@@ -6881,9 +6942,62 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "chatId": {
+                    "type": "string"
+                  },
+                  "media": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "enum": [
+                            "photo",
+                            "video",
+                            "document"
+                          ]
+                        },
+                        "url": {
+                          "type": "string"
+                        },
+                        "caption": {
+                          "type": "string"
+                        },
+                        "fileName": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "silent": {
+                    "type": "boolean"
+                  },
+                  "scheduleDate": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
-          "201": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Send multiple media files in batch",
@@ -6907,8 +7021,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Check if 2FA password is set",
@@ -6932,7 +7053,7 @@
           },
           {
             "name": "limit",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
               "type": "number"
@@ -6940,7 +7061,7 @@
           },
           {
             "name": "offsetDate",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
               "type": "number"
@@ -6948,7 +7069,7 @@
           },
           {
             "name": "offsetId",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
               "type": "number"
@@ -6956,7 +7077,7 @@
           },
           {
             "name": "offsetPeer",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
               "type": "string"
@@ -6964,7 +7085,7 @@
           },
           {
             "name": "folderId",
-            "required": true,
+            "required": false,
             "in": "query",
             "schema": {
               "type": "number"
@@ -6972,8 +7093,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get chats with advanced filtering",
@@ -7013,8 +7141,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
           }
         },
         "summary": "Get downloadable URL for a file",
@@ -7037,9 +7172,43 @@
             }
           }
         ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "chatId": {
+                    "type": "string"
+                  },
+                  "period": {
+                    "type": "string",
+                    "enum": [
+                      "day",
+                      "week",
+                      "month"
+                    ]
+                  },
+                  "fromDate": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            }
+          }
+        },
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get message statistics",
@@ -7063,8 +7232,15 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": ""
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Get top 5 private chats with detailed statistics",
@@ -7107,8 +7283,15 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "Bots added to channels successfully"
+          "default": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
           }
         },
         "summary": "Add bots to channel with admin privileges",
@@ -7142,31 +7325,27 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "Bot created successfully",
+          "default": {
+            "schema": {
+              "properties": {
+                "botToken": {
+                  "type": "string",
+                  "description": "The token to access HTTP Bot API"
+                },
+                "username": {
+                  "type": "string",
+                  "description": "The username of the created bot"
+                }
+              }
+            },
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "botToken": {
-                      "type": "string",
-                      "description": "The token to access HTTP Bot API"
-                    },
-                    "username": {
-                      "type": "string",
-                      "description": "The username of the created bot"
-                    }
-                  }
+                  "type": "object"
                 }
               }
             }
-          },
-          "400": {
-            "description": "Bad Request - Invalid bot details"
-          },
-          "401": {
-            "description": "Unauthorized - Client not connected"
           }
         },
         "summary": "Create a new bot using BotFather",
@@ -7634,786 +7813,6 @@
         "summary": "Delete a transaction",
         "tags": [
           "Transactions"
-        ]
-      }
-    },
-    "/archived-clients": {
-      "post": {
-        "description": "Creates a new archived client record with session information. Used when a Telegram client becomes inactive but needs to be preserved for potential future reactivation.",
-        "operationId": "ArchivedClientController_create",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "description": "Archived client data including mobile number and session token",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateArchivedClientDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Archived client successfully created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ArchivedClient"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid input data provided"
-          },
-          "500": {
-            "description": "Internal server error occurred"
-          }
-        },
-        "summary": "Create new archived client",
-        "tags": [
-          "Archived Clients"
-        ]
-      },
-      "get": {
-        "description": "Retrieves a complete list of all archived clients in the system. Use with caution on large datasets.",
-        "operationId": "ArchivedClientController_findAll",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Complete list of all archived clients",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ArchivedClient"
-                  }
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Database error occurred"
-          }
-        },
-        "summary": "Get all archived clients",
-        "tags": [
-          "Archived Clients"
-        ]
-      }
-    },
-    "/archived-clients/search": {
-      "get": {
-        "description": "Search for archived clients using various filter criteria. Supports partial matching for names and exact matching for other fields.",
-        "operationId": "ArchivedClientController_search",
-        "parameters": [
-          {
-            "name": "clientId",
-            "required": false,
-            "in": "query",
-            "description": "Unique client identifier",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "dbcoll",
-            "required": false,
-            "in": "query",
-            "description": "Database collection name for filtering",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "channelLink",
-            "required": false,
-            "in": "query",
-            "description": "Associated channel link",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "link",
-            "required": false,
-            "in": "query",
-            "description": "Client profile link",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "name",
-            "required": false,
-            "in": "query",
-            "description": "Name of the client",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "number",
-            "required": false,
-            "in": "query",
-            "description": "Phone number of the client",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "password",
-            "required": false,
-            "in": "query",
-            "description": "Password of the client",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "repl",
-            "required": false,
-            "in": "query",
-            "description": "Repl link of the client",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "promoteRepl",
-            "required": false,
-            "in": "query",
-            "description": "Promotion Repl link of the client",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "clientName",
-            "required": false,
-            "in": "query",
-            "description": "Clientname of the client",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "deployKey",
-            "required": false,
-            "in": "query",
-            "description": "Deployment key URL",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "mainAccount",
-            "required": false,
-            "in": "query",
-            "description": "Main account of the client",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "product",
-            "required": false,
-            "in": "query",
-            "description": "Product associated with the client",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "hasPromoteMobiles",
-            "required": false,
-            "in": "query",
-            "description": "Search by client ID that has promote mobiles assigned",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "qrId",
-            "required": false,
-            "in": "query",
-            "description": "Paytm QR ID of the client",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "gpayId",
-            "required": false,
-            "in": "query",
-            "description": "Google Pay ID of the client",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "firstName",
-            "required": false,
-            "in": "query",
-            "description": "First name (supports partial matching)",
-            "schema": {}
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of archived clients matching search criteria",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ArchivedClient"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid search parameters"
-          }
-        },
-        "summary": "Search archived clients",
-        "tags": [
-          "Archived Clients"
-        ]
-      }
-    },
-    "/archived-clients/maintenance/check-archived-clients": {
-      "get": {
-        "description": "Performs comprehensive maintenance on all archived clients including session validation, profile updates, and cleanup of inactive sessions. This is a long-running operation that should be used during maintenance windows.",
-        "operationId": "ArchivedClientController_checkArchivedClients",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Maintenance check completed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string",
-                  "example": "Archived clients check completed. Processed: 150, Updated: 23, Deleted: 5, Errors: 2"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Maintenance operation failed"
-          }
-        },
-        "summary": "Run archived clients maintenance check",
-        "tags": [
-          "Archived Clients"
-        ]
-      }
-    },
-    "/archived-clients/{mobile}": {
-      "get": {
-        "description": "Retrieves a specific archived client using their mobile number. Returns null if not found.",
-        "operationId": "ArchivedClientController_findOne",
-        "parameters": [
-          {
-            "name": "mobile",
-            "required": true,
-            "in": "path",
-            "description": "Mobile number of the archived client",
-            "schema": {
-              "example": "916265240911",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Archived client found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ArchivedClient"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Archived client not found"
-          }
-        },
-        "summary": "Get archived client by mobile number",
-        "tags": [
-          "Archived Clients"
-        ]
-      },
-      "patch": {
-        "description": "Updates an existing archived client record. Uses upsert operation - creates if not exists.",
-        "operationId": "ArchivedClientController_update",
-        "parameters": [
-          {
-            "name": "mobile",
-            "required": true,
-            "in": "path",
-            "description": "Mobile number of the archived client",
-            "schema": {
-              "example": "916265240911",
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "description": "Fields to update (partial update supported)",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UpdateClientDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Archived client updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ArchivedClient"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid update data"
-          }
-        },
-        "summary": "Update archived client",
-        "tags": [
-          "Archived Clients"
-        ]
-      },
-      "delete": {
-        "description": "Permanently removes an archived client record from the system.",
-        "operationId": "ArchivedClientController_remove",
-        "parameters": [
-          {
-            "name": "mobile",
-            "required": true,
-            "in": "path",
-            "description": "Mobile number of the archived client to delete",
-            "schema": {
-              "example": "916265240911",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Archived client deleted successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ArchivedClient"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Archived client not found"
-          }
-        },
-        "summary": "Delete archived client",
-        "tags": [
-          "Archived Clients"
-        ]
-      }
-    },
-    "/archived-clients/fetch/{mobile}": {
-      "get": {
-        "description": "Retrieves an archived client by mobile number. If not found, creates a new session and archived client record automatically.",
-        "operationId": "ArchivedClientController_fetchOne",
-        "parameters": [
-          {
-            "name": "mobile",
-            "required": true,
-            "in": "path",
-            "description": "Mobile number of the client",
-            "schema": {
-              "example": "916265240911",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Archived client retrieved or created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ArchivedClient"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Could not create session for the mobile number"
-          },
-          "500": {
-            "description": "Session creation failed"
-          }
-        },
-        "summary": "Fetch or create archived client",
-        "tags": [
-          "Archived Clients"
-        ]
-      }
-    },
-    "/archived-clients/query": {
-      "post": {
-        "description": "Executes a custom MongoDB query against the archived clients collection. Use with caution as this provides direct database access.",
-        "operationId": "ArchivedClientController_executeQuery",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "description": "MongoDB query object",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "example": {
-                  "mobile": "916265240911"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Query executed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ArchivedClient"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid query provided"
-          },
-          "500": {
-            "description": "Query execution failed"
-          }
-        },
-        "summary": "Execute custom MongoDB query",
-        "tags": [
-          "Archived Clients"
-        ]
-      }
-    },
-    "/archived-clients/{mobile}/session": {
-      "put": {
-        "description": "Updates the main session for an archived client. If the current session is still active, it will be backed up to oldSessions array before being replaced.",
-        "operationId": "ArchivedClientController_updateSession",
-        "parameters": [
-          {
-            "name": "mobile",
-            "required": true,
-            "in": "path",
-            "description": "Mobile number of the archived client",
-            "schema": {
-              "example": "916265240911",
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "description": "New session data",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SessionUpdateDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Session updated successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ArchivedClient"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid session token provided"
-          },
-          "404": {
-            "description": "Archived client not found"
-          }
-        },
-        "summary": "Update session with backup",
-        "tags": [
-          "Archived Clients"
-        ]
-      }
-    },
-    "/archived-clients/{mobile}/old-sessions": {
-      "get": {
-        "description": "Retrieves all old session tokens stored for an archived client. These are previous sessions that were backed up when new sessions were set.",
-        "operationId": "ArchivedClientController_getOldSessions",
-        "parameters": [
-          {
-            "name": "mobile",
-            "required": true,
-            "in": "path",
-            "description": "Mobile number of the archived client",
-            "schema": {
-              "example": "916265240911",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "List of old session tokens",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "string",
-                    "description": "Session token"
-                  },
-                  "example": [
-                    "1BQANOTEuM==",
-                    "2CRANOTEuN==",
-                    "3DRANOTEuO=="
-                  ]
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Mobile number is required"
-          },
-          "404": {
-            "description": "Archived client not found"
-          }
-        },
-        "summary": "Get old sessions for client",
-        "tags": [
-          "Archived Clients"
-        ]
-      }
-    },
-    "/archived-clients/{mobile}/cleanup-sessions": {
-      "post": {
-        "description": "Removes inactive old sessions and limits the number of stored old sessions. Only keeps the most recent active sessions up to the specified limit.",
-        "operationId": "ArchivedClientController_cleanupOldSessions",
-        "parameters": [
-          {
-            "name": "mobile",
-            "required": true,
-            "in": "path",
-            "description": "Mobile number of the archived client",
-            "schema": {
-              "example": "916265240911",
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": false,
-          "description": "Cleanup configuration",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CleanupSessionsDto"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Session cleanup completed successfully",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ArchivedClient"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid maxSessions value"
-          },
-          "404": {
-            "description": "Archived client not found"
-          }
-        },
-        "summary": "Clean up old sessions",
-        "tags": [
-          "Archived Clients"
-        ]
-      }
-    },
-    "/archived-clients/{mobile}/session-status": {
-      "get": {
-        "description": "Checks if the current session for an archived client is active. This is useful for verifying session health before performing operations.",
-        "operationId": "ArchivedClientController_checkSessionStatus",
-        "parameters": [
-          {
-            "name": "mobile",
-            "required": true,
-            "in": "path",
-            "description": "Mobile number of the archived client",
-            "schema": {
-              "example": "916265240911",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Session status information",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SessionStatusDto"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Archived client not found"
-          }
-        },
-        "summary": "Check session status",
-        "tags": [
-          "Archived Clients"
-        ]
-      }
-    },
-    "/archived-clients/batch-fetch": {
-      "post": {
-        "description": "Efficiently retrieves or creates active sessions for multiple mobile numbers in a single request. Useful for bulk operations.",
-        "operationId": "ArchivedClientController_batchFetchSessions",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "description": "Array of mobile numbers to process",
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "mobiles": {
-                    "type": "array",
-                    "items": {
-                      "type": "string"
-                    },
-                    "maxItems": 50,
-                    "example": [
-                      "916265240911",
-                      "916265240912",
-                      "916265240913"
-                    ]
-                  }
-                },
-                "required": [
-                  "mobiles"
-                ]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Batch processing results",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "mobile": {
-                        "type": "string"
-                      },
-                      "client": {
-                        "$ref": "#/components/schemas/ArchivedClient"
-                      },
-                      "error": {
-                        "type": "string"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid batch request or too many mobiles"
-          }
-        },
-        "summary": "Batch fetch sessions for multiple mobiles",
-        "tags": [
-          "Archived Clients"
-        ]
-      }
-    },
-    "/archived-clients/health/cache-stats": {
-      "get": {
-        "description": "Returns statistics about the internal session validation cache for monitoring and debugging purposes.",
-        "operationId": "ArchivedClientController_getCacheStats",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "Cache statistics",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "totalEntries": {
-                      "type": "number",
-                      "example": 150
-                    },
-                    "validEntries": {
-                      "type": "number",
-                      "example": 120
-                    },
-                    "expiredEntries": {
-                      "type": "number",
-                      "example": 30
-                    },
-                    "cacheHitRate": {
-                      "type": "string",
-                      "example": "85%"
-                    },
-                    "lastCleanup": {
-                      "type": "string",
-                      "format": "date-time"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "summary": "Get session validation cache statistics",
-        "tags": [
-          "Archived Clients"
         ]
       }
     },
@@ -10393,326 +9792,6 @@
         "type": "object",
         "properties": {}
       },
-      "FolderResponse": {
-        "type": "object",
-        "properties": {
-          "folders": {
-            "example": [
-              "folder1",
-              "folder2"
-            ],
-            "description": "List of folder names",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "folders"
-        ]
-      },
-      "ErrorResponse": {
-        "type": "object",
-        "properties": {
-          "statusCode": {
-            "type": "number",
-            "example": 400,
-            "description": "HTTP status code"
-          },
-          "message": {
-            "type": "string",
-            "example": "File not found",
-            "description": "Error message"
-          },
-          "error": {
-            "type": "string",
-            "example": "Bad Request",
-            "description": "Error type"
-          }
-        },
-        "required": [
-          "statusCode",
-          "message",
-          "error"
-        ]
-      },
-      "FolderDetailsResponse": {
-        "type": "object",
-        "properties": {
-          "folder": {
-            "type": "string",
-            "example": "documents",
-            "description": "Name of the folder"
-          },
-          "files": {
-            "example": [
-              "file1.pdf",
-              "file2.jpg"
-            ],
-            "description": "List of files in the folder",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "totalFiles": {
-            "type": "number",
-            "example": 100,
-            "description": "Total number of files in folder"
-          },
-          "page": {
-            "type": "number",
-            "example": 1,
-            "description": "Current page number"
-          },
-          "limit": {
-            "type": "number",
-            "example": 10,
-            "description": "Number of items per page"
-          }
-        },
-        "required": [
-          "folder",
-          "files",
-          "totalFiles",
-          "page",
-          "limit"
-        ]
-      },
-      "UploadByUrlDto": {
-        "type": "object",
-        "properties": {
-          "folder": {
-            "type": "string",
-            "example": "videos"
-          },
-          "files": {
-            "type": "object",
-            "example": {
-              "intro": "https://cdn.example.com/video1.mp4",
-              "welcome": "https://cdn.example.com/welcome"
-            }
-          }
-        },
-        "required": [
-          "folder",
-          "files"
-        ]
-      },
-      "FileMetadataResponse": {
-        "type": "object",
-        "properties": {
-          "filename": {
-            "type": "string",
-            "example": "document.pdf",
-            "description": "Name of the file"
-          },
-          "size": {
-            "type": "number",
-            "example": 1024,
-            "description": "Size of file in bytes"
-          },
-          "createdAt": {
-            "format": "date-time",
-            "type": "string",
-            "example": "2024-02-20T10:00:00.000Z",
-            "description": "Creation timestamp"
-          },
-          "modifiedAt": {
-            "format": "date-time",
-            "type": "string",
-            "example": "2024-02-20T11:30:00.000Z",
-            "description": "Last modification timestamp"
-          }
-        },
-        "required": [
-          "filename",
-          "size",
-          "createdAt",
-          "modifiedAt"
-        ]
-      },
-      "JsonFileResponse": {
-        "type": "object",
-        "properties": {
-          "content": {
-            "type": "object",
-            "example": {
-              "key": "value",
-              "name": "example",
-              "age": 30,
-              "nested": {
-                "key": "value"
-              }
-            },
-            "description": "JSON file content"
-          }
-        },
-        "required": [
-          "content"
-        ]
-      },
-      "JsonValueResponse": {
-        "type": "object",
-        "properties": {
-          "value": {
-            "type": "object",
-            "example": "value",
-            "description": "Value at the specified path in the JSON file"
-          }
-        },
-        "required": [
-          "value"
-        ]
-      },
-      "FolderTreeResponse": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "example": "root",
-            "description": "Name of the current node"
-          },
-          "children": {
-            "example": [
-              {
-                "name": "folder1",
-                "children": []
-              },
-              {
-                "name": "file1.pdf"
-              }
-            ],
-            "description": "Child nodes (folders and files)",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "name",
-          "children"
-        ]
-      },
-      "ShareableLinkResponse": {
-        "type": "object",
-        "properties": {
-          "shareableLink": {
-            "type": "string",
-            "example": "https://promoteClients2.glitch.me/folders/docs/files/example.pdf?share=true",
-            "description": "Generated shareable link for the file"
-          }
-        },
-        "required": [
-          "shareableLink"
-        ]
-      },
-      "FileVersionResponse": {
-        "type": "object",
-        "properties": {
-          "filename": {
-            "type": "string",
-            "example": "document.pdf",
-            "description": "Name of the original file"
-          },
-          "versions": {
-            "example": [
-              {
-                "version": "1",
-                "filename": "document.pdf.v1"
-              },
-              {
-                "version": "2",
-                "filename": "document.pdf.v2"
-              }
-            ],
-            "description": "List of available versions",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "filename",
-          "versions"
-        ]
-      },
-      "FileOperationMetricDto": {
-        "type": "object",
-        "properties": {
-          "operation": {
-            "type": "string",
-            "example": "createFolder",
-            "description": "Name of the file operation"
-          },
-          "success": {
-            "type": "boolean",
-            "example": true,
-            "description": "Whether the operation succeeded"
-          },
-          "duration": {
-            "type": "number",
-            "example": 123,
-            "description": "Duration of operation in milliseconds"
-          },
-          "timestamp": {
-            "type": "number",
-            "example": 1645564789123,
-            "description": "Timestamp of the operation"
-          },
-          "path": {
-            "type": "string",
-            "example": "/uploads/docs",
-            "description": "Path involved in the operation"
-          },
-          "error": {
-            "type": "string",
-            "description": "Error message if operation failed"
-          }
-        },
-        "required": [
-          "operation",
-          "success",
-          "duration",
-          "timestamp"
-        ]
-      },
-      "FileOperationMetricsResponse": {
-        "type": "object",
-        "properties": {
-          "metrics": {
-            "description": "Recent file operation metrics",
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FileOperationMetricDto"
-            }
-          },
-          "failureRate": {
-            "type": "number",
-            "example": 0.05,
-            "description": "Rate of failed operations in the time window"
-          },
-          "timeWindow": {
-            "type": "number",
-            "example": 3600000,
-            "description": "Time window in milliseconds"
-          },
-          "totalOperations": {
-            "type": "number",
-            "example": 100,
-            "description": "Total number of operations recorded"
-          }
-        },
-        "required": [
-          "metrics",
-          "failureRate",
-          "timeWindow",
-          "totalOperations"
-        ]
-      },
       "CreateClientDto": {
         "type": "object",
         "properties": {
@@ -10833,6 +9912,121 @@
           "deployKey",
           "mainAccount",
           "product"
+        ]
+      },
+      "Client": {
+        "type": "object",
+        "properties": {
+          "channelLink": {
+            "type": "string",
+            "example": "paid_giirl_shruthiee",
+            "description": "Channel link of the user"
+          },
+          "dbcoll": {
+            "type": "string",
+            "example": "shruthi",
+            "description": "Database collection name"
+          },
+          "link": {
+            "type": "string",
+            "example": "PaidGirl.netlify.app/Shruthi1",
+            "description": "Link of the user"
+          },
+          "name": {
+            "type": "string",
+            "example": "Shruthi Reddy",
+            "description": "Name of the user"
+          },
+          "mobile": {
+            "type": "string",
+            "example": "916265240911",
+            "description": "mobile number of the user"
+          },
+          "password": {
+            "type": "string",
+            "example": "Ajtdmwajt1@",
+            "description": "Password of the user"
+          },
+          "repl": {
+            "type": "string",
+            "example": "https://shruthi1.glitch.me",
+            "description": "Repl link of the user"
+          },
+          "promoteRepl": {
+            "type": "string",
+            "example": "https://shruthiprom0101.glitch.me",
+            "description": "Promotion Repl link of the user"
+          },
+          "session": {
+            "type": "string",
+            "example": "1BQANOTEuM==",
+            "description": "Session token"
+          },
+          "username": {
+            "type": "string",
+            "example": "ShruthiRedd2",
+            "description": "Username of the user"
+          },
+          "clientId": {
+            "type": "string",
+            "example": "shruthi1",
+            "description": "Client ID of the user"
+          },
+          "deployKey": {
+            "type": "string",
+            "example": "https://shruthi1.glitch.me/exit",
+            "description": "Deployment key URL"
+          },
+          "mainAccount": {
+            "type": "string",
+            "example": "ShruthiRedd2",
+            "description": "Main account of the user"
+          },
+          "product": {
+            "type": "string",
+            "example": "booklet_10",
+            "description": "Product associated with the user"
+          },
+          "qrId": {
+            "type": "string",
+            "example": "paytmqr281005050101xv6mfg02t4m9@paytm",
+            "description": "Paytm QR ID of the user"
+          },
+          "gpayId": {
+            "type": "string",
+            "example": "myred1808@postbank",
+            "description": "Google Pay ID of the user"
+          },
+          "dedicatedIps": {
+            "example": [
+              "192.168.1.100:8080",
+              "192.168.1.101:8080"
+            ],
+            "description": "Dedicated proxy IPs assigned to this client",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "channelLink",
+          "dbcoll",
+          "link",
+          "name",
+          "mobile",
+          "password",
+          "repl",
+          "promoteRepl",
+          "session",
+          "username",
+          "clientId",
+          "deployKey",
+          "mainAccount",
+          "product",
+          "qrId",
+          "gpayId",
+          "dedicatedIps"
         ]
       },
       "UpdateClientDto": {
@@ -10987,6 +10181,10 @@
           "session",
           "channels"
         ]
+      },
+      "BufferClient": {
+        "type": "object",
+        "properties": {}
       },
       "UpdateBufferClientDto": {
         "type": "object",
@@ -11455,6 +10653,10 @@
           "videos"
         ]
       },
+      "UserData": {
+        "type": "object",
+        "properties": {}
+      },
       "UpdateUserDataDto": {
         "type": "object",
         "properties": {
@@ -11625,6 +10827,10 @@
           "channels"
         ]
       },
+      "PromoteClient": {
+        "type": "object",
+        "properties": {}
+      },
       "UpdatePromoteClientDto": {
         "type": "object",
         "properties": {
@@ -11677,38 +10883,6 @@
             "example": "2023-06-22T10:30:00.000Z"
           }
         }
-      },
-      "ConnectionStatsDto": {
-        "type": "object",
-        "properties": {
-          "total": {
-            "type": "number",
-            "description": "Total number of connections"
-          },
-          "connected": {
-            "type": "number",
-            "description": "Number of connected clients"
-          },
-          "connecting": {
-            "type": "number",
-            "description": "Number of connecting clients"
-          },
-          "disconnecting": {
-            "type": "number",
-            "description": "Number of disconnecting clients"
-          },
-          "error": {
-            "type": "number",
-            "description": "Number of clients in error state"
-          }
-        },
-        "required": [
-          "total",
-          "connected",
-          "connecting",
-          "disconnecting",
-          "error"
-        ]
       },
       "ConnectionStatusDto": {
         "type": "object",
@@ -12781,189 +11955,6 @@
             "default": "pending"
           }
         }
-      },
-      "CreateArchivedClientDto": {
-        "type": "object",
-        "properties": {
-          "mobile": {
-            "type": "string",
-            "example": "+916265240911",
-            "description": "Phone number of the user"
-          },
-          "session": {
-            "type": "string",
-            "example": "1BQANOTEuMTA4LjUg==",
-            "description": "Current session token"
-          },
-          "oldSessions": {
-            "example": [
-              "1BQANOTEuM==",
-              "2CRANOTEuN=="
-            ],
-            "description": "Array of old session tokens",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "mobile",
-          "session"
-        ]
-      },
-      "ArchivedClient": {
-        "type": "object",
-        "properties": {
-          "mobile": {
-            "type": "string",
-            "example": "916265240911",
-            "description": "Mobile number of the archived user"
-          },
-          "session": {
-            "type": "string",
-            "example": "1BQANOTEuM==",
-            "description": "Current session token of the archived user"
-          },
-          "oldSessions": {
-            "example": [
-              "1BQANOTEuM==",
-              "2CRANOTEuN=="
-            ],
-            "description": "Array of old session tokens",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "lastUpdated": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Last time the session was updated"
-          },
-          "lastCleanup": {
-            "format": "date-time",
-            "type": "string",
-            "description": "Last time sessions were cleaned up"
-          },
-          "sessionHistory": {
-            "description": "Session history for auditing purposes",
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          }
-        },
-        "required": [
-          "mobile",
-          "session",
-          "oldSessions",
-          "lastUpdated",
-          "lastCleanup",
-          "sessionHistory"
-        ]
-      },
-      "SessionUpdateDto": {
-        "type": "object",
-        "properties": {
-          "newSession": {
-            "type": "string",
-            "example": "1BQANOTEuMTA4LjUg==",
-            "description": "New session token to set as primary session"
-          }
-        },
-        "required": [
-          "newSession"
-        ]
-      },
-      "CleanupSessionsDto": {
-        "type": "object",
-        "properties": {
-          "maxSessions": {
-            "type": "number",
-            "example": 5,
-            "description": "Maximum number of old sessions to keep",
-            "minimum": 0,
-            "maximum": 20,
-            "default": 5
-          }
-        }
-      },
-      "SessionHealthMetricsDto": {
-        "type": "object",
-        "properties": {
-          "activeOldSessions": {
-            "type": "number",
-            "example": 2,
-            "description": "Number of active old sessions available as backup"
-          },
-          "lastUpdated": {
-            "type": "string",
-            "example": "2024-01-15T08:30:00.000Z",
-            "description": "Timestamp when the session was last updated"
-          },
-          "sessionAge": {
-            "type": "string",
-            "example": "2 hours ago",
-            "description": "Human-readable session age"
-          },
-          "reliability": {
-            "type": "string",
-            "example": "high",
-            "description": "Session reliability rating based on availability",
-            "enum": [
-              "high",
-              "medium",
-              "low"
-            ]
-          }
-        },
-        "required": [
-          "activeOldSessions",
-          "lastUpdated",
-          "sessionAge",
-          "reliability"
-        ]
-      },
-      "SessionStatusDto": {
-        "type": "object",
-        "properties": {
-          "mobile": {
-            "type": "string",
-            "example": "916265240911",
-            "description": "Mobile number of the archived client"
-          },
-          "isMainSessionActive": {
-            "type": "boolean",
-            "example": true,
-            "description": "Whether the main session is currently active"
-          },
-          "totalOldSessions": {
-            "type": "number",
-            "example": 3,
-            "description": "Total number of old sessions stored"
-          },
-          "lastChecked": {
-            "type": "string",
-            "example": "2024-01-15T10:30:00.000Z",
-            "description": "Timestamp when the status was last checked"
-          },
-          "healthMetrics": {
-            "description": "Detailed health metrics for the session",
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/SessionHealthMetricsDto"
-              }
-            ]
-          }
-        },
-        "required": [
-          "mobile",
-          "isMainSessionActive",
-          "totalOldSessions",
-          "lastChecked",
-          "healthMetrics"
-        ]
       },
       "SendCodeDto": {
         "type": "object",
