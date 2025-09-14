@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "engines": {
-    "node": ">=16.0.0 <21.0.0"
+    "node": ">=16.0.0"
   },
   "scripts": {
     "build": "npm update commonService && nest build",
@@ -31,7 +31,7 @@
   },
   "dependencies": {
     "ams-ssk": "^1.0.29",
-    "common-tg-service": "^1.3.21",
+    "common-tg-service": "^1.3.32",
     "node-schedule-tz": "^1.2.1-4"
   },
   "jest": {

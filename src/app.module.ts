@@ -10,6 +10,7 @@ import { APP_GUARD } from '@nestjs/core';
     forwardRef(() => cts.InitModule),
     AMS.FileModule.forRoot(),
     forwardRef(() => cts.BuildModule),
+    forwardRef(() => cts.BotsModule),
     forwardRef(() => cts.ClientModule),
     forwardRef(() => cts.BufferClientModule),
     forwardRef(() => cts.ChannelsModule),
